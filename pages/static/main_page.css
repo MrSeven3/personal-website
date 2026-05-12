@@ -1,6 +1,7 @@
 .main-intro {
     font-size: 48px;
     padding-top: 5px;
+    flex-direction: column;
 
     h1 {
         margin-top: 0;
@@ -11,27 +12,37 @@
 
 .upper-intro {
     margin-bottom: 0;
+    flex-direction: column;
+}
+
+.intro {
+    margin: 3rem auto;
+    width: fit-content;
+
 }
 
 .full-page {
     padding-left: 40px;
     padding-right: 40px;
+    background: #1e1e2e;
 }
 
 ::selection {
-   background: oklch(0.6513 0.2223 321.01);
+   background: oklch(0.652 0.223 321.045 / 0.41);
 }
 
 .space-grotesk-single-header {
-  font-family: "Space Grotesk", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 425;
-  font-style: normal;
+    font-family: "Space Grotesk", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 425;
+    font-style: normal;
+    color: #a6adc8;
 }
 
 .space-grotesk-normal{
-  font-family: "Space Grotesk", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 350;
-  font-style: normal;
+    font-family: "Space Grotesk", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 350;
+    font-style: normal;
+    color: #a6adc8;
 }
