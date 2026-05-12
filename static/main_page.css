@@ -10,7 +10,7 @@
     }
 }
 
-.upper-intro {
+.comment-intro {
     margin-bottom: 0;
     flex-direction: column;
 }
@@ -18,7 +18,6 @@
 .intro {
     margin: 3rem auto;
     width: fit-content;
-
 }
 
 .full-page {
