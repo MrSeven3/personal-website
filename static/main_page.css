@@ -10,14 +10,20 @@
     }
 }
 
-.comment-intro {
+.intro-header {
     margin-bottom: 0;
     flex-direction: column;
 }
 
+.intro-comment {
+    margin-top: 5px;
+    flex-direction: column;
+    font-size: 24px;
+}
+
 .intro {
     margin: 3rem auto;
-    width: fit-content;
+    width: 35%;
 }
 
 .full-page {
@@ -37,6 +43,15 @@
     font-style: normal;
     color: #a6adc8;
 }
+
+.space-grotesk-header {
+    font-family: "Space Grotesk", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    color: #a6adc8;
+}
+
 
 .space-grotesk-normal{
     font-family: "Space Grotesk", sans-serif;

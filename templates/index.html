@@ -4,20 +4,23 @@
         <title>im thirtyseven</title>
 
         <!--first sheet is for dev, the second will compile properly with flask.-->
-        <!-- <link rel="stylesheet" href="/static/main_page.css"> -->
-        <link rel="stylesheet" href="{{ url_for('static', filename='main_page.css') }}">
+        <link rel="stylesheet" href="/static/main_page.css">
+<!--        <link rel="stylesheet" href="{{ url_for('static', filename='main_page.css') }}"> -->
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
     </head>
     <body class="full-page">
-        <div class="intro">
-            <p class="comment-intro space-grotesk-normal">hey! im</p>
+        <div class="intro space-grotesk-normal">
+            <p class="intro-header">hey! im</p>
             <div class="main-intro space-grotesk-single-header">
                 <h1>thirtyseven</h1>
             </div>
-            <p class="comment-intro space-grotesk-normal">i also go by MrSeven, seventythree, seven, and variations of those</p>
+            <p class="intro-comment">i also go by MrSeven, seventythree, seven, and variations of those</p>
+        </div>
+        <div class="space-grotesk-normal">
+            <h2 class="space-grotesk-header">who are you?</h2>
         </div>
     </body>
 </html>
