@@ -1,0 +1,37 @@
+.main-intro {
+    font-size: 48px;
+    padding-top: 5px;
+
+    h1 {
+        margin-top: 0;
+        margin-bottom: 0;
+        line-height: 1;
+    }
+}
+
+.upper-intro {
+    margin-bottom: 0;
+}
+
+.full-page {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+::selection {
+   background: oklch(0.6513 0.2223 321.01);
+}
+
+.space-grotesk-single-header {
+  font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 425;
+  font-style: normal;
+}
+
+.space-grotesk-normal{
+  font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 350;
+  font-style: normal;
+}
