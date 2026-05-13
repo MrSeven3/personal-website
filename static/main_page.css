@@ -1,6 +1,6 @@
 .main-intro {
     font-size: 48px;
-    padding-top: 0px;
+    padding-top: 0;
     flex-direction: column;
 
     h1 {
@@ -50,6 +50,10 @@
     background: #1e1e2e;
 }
 
+a {
+    color: oklch(0.7871 0.1187 304.77);
+}
+
 ::selection {
    background: oklch(0.652 0.223 321.045 / 0.41);
 }
@@ -60,7 +64,7 @@
     font-optical-sizing: auto;
     font-weight: 425;
     font-style: normal;
-    color: #a6adc8;
+    color: oklch(0.751 0.0396 273.93);
 }
 
 .space-grotesk-header {
@@ -68,7 +72,7 @@
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
-    color: #a6adc8;
+    color: oklch(0.751 0.0396 273.93);
 }
 
 .space-grotesk-normal{
@@ -76,5 +80,5 @@
     font-optical-sizing: auto;
     font-weight: 350;
     font-style: normal;
-    color: #a6adc8;
+    color: oklch(0.751 0.0396 273.93);
 }
