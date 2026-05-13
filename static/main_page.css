@@ -1,6 +1,6 @@
 .main-intro {
     font-size: 48px;
-    padding-top: 5px;
+    padding-top: 0px;
     flex-direction: column;
 
     h1 {
@@ -23,18 +23,37 @@
 
 .intro {
     margin: 3rem auto;
-    width: 35%;
+    width: 30%;
+}
+
+.info-section {
+    padding-left: 10vw;
+    padding-right: 10vw;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.info-section h2 {
+    font-size: 32px;
+    margin-bottom: 0;
+}
+
+.info-panel {
+    margin: 1rem;
+}
+
+.info-panel p {
+    margin-top: 2px;
 }
 
 .full-page {
-    padding-left: 40px;
-    padding-right: 40px;
     background: #1e1e2e;
 }
 
 ::selection {
    background: oklch(0.652 0.223 321.045 / 0.41);
 }
+
 
 .space-grotesk-single-header {
     font-family: "Space Grotesk", sans-serif;
@@ -51,7 +70,6 @@
     font-style: normal;
     color: #a6adc8;
 }
-
 
 .space-grotesk-normal{
     font-family: "Space Grotesk", sans-serif;
