@@ -1,5 +1,5 @@
 .main-intro {
-    font-size: 48px;
+    font-size: max(12px,48px);
     padding-top: 0;
     flex-direction: column;
 
@@ -7,6 +7,7 @@
         margin-top: 0;
         margin-bottom: 0;
         line-height: 1;
+        text-align: center;
     }
 }
 
@@ -23,7 +24,7 @@
 
 .intro {
     margin: 3rem auto;
-    width: 30%;
+    width: 33em;
 }
 
 .info-section {
