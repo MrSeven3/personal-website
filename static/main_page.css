@@ -55,6 +55,29 @@
     margin-top: 2px;
 }
 
+#stats-header {
+    text-align: right;
+    margin-right: 12vw;
+    padding-right: 1em;
+}
+
+.stats-section {
+    padding-left: 12vw;
+    padding-right: 12vw;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.stats-panel {
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 1em;
+}
+
+.text-highlight {
+    color: oklch(0.7176 0.1839 304.77);
+}
+
 .full-page {
     background: #1e1e2e;
 }
@@ -81,7 +104,17 @@ a {
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
+    font-size: 32px;
     color: oklch(0.751 0.0396 273.93);
+}
+
+h3.space-grotesk-header {
+    font-family: "Space Grotesk", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    color: oklch(0.751 0.0396 273.93);
+    font-size: 24px;
 }
 
 .space-grotesk-normal{

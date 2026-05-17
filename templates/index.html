@@ -4,8 +4,8 @@
         <title>im thirtyseven</title>
 
         <!--first sheet is for dev, the second will compile properly with flask.-->
-<!--        <link rel="stylesheet" href="/static/main_page.css">-->
-        <link rel="stylesheet" href="{{ url_for('static', filename='main_page.css') }}">
+        <link rel="stylesheet" href="/static/main_page.css">
+<!--        <link rel="stylesheet" href="{{ url_for('static', filename='main_page.css') }}">-->
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,11 +20,11 @@
                 <h1>thirtyseven</h1>
             </div>
 
-            <p class="intro-comment">i also go by MrSeven, seventythree, seven, and variations of those</p>
+            <p class="intro-comment">i also go by mrseven, seventythree, seven, and variations of those</p>
         </div>
 
         <div class="info-section">
-            <div class="space-grotesk-normal info-panel info-panel-first-row">
+            <div class="space-grotesk-normal info-panel">
                 <h2 class="space-grotesk-header">stuff ive done</h2>
                 <p>at the moment, on the public internet, very little of significance. i do some stuff for hack club,
                     and am currently working on <a href="https://sparkle.dino.icu">sparkle</a> with a few others. <br><br>
@@ -38,7 +38,7 @@
                     fighting with slacks api. <br><br>i play far too many video games (namely factory games and beat saber).
                     if you couldnt tell, i really like the colour purple. </p>
             </div>
-            <div class="space-grotesk-normal info-panel info-panel-large info-panel-first-row info-panel-last">
+            <div class="space-grotesk-normal info-panel info-panel-large">
                 <h2 class="space-grotesk-header">my homelab</h2>
                 <p>totally overkill lmao. i run voidauth for sso, and have like 12 different compose stacks running stuff.
                     the docker containers are managed by komodo (great software). everything with a public domain is through nginx
@@ -51,8 +51,15 @@
             </div>
         </div>
 
-        <div class="stats-section">
+        <h2 class="space-grotesk-header" id="stats-header">stats and stuff</h2>
 
+        <div class="stats-section">
+            <div class="stats-panel">
+                <h3 class="space-grotesk-header"><span class="text-highlight">23</span> docker services online</h3>
+            </div>
+            <div class="stats-panel">
+                <h3 class="space-grotesk-header">this website has <span class="text-highlight">99.324%</span> uptime over the last 30 days</h3>
+            </div>
         </div>
     </body>
 </html>
