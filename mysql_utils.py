@@ -1,7 +1,7 @@
+import ast
 import mysql.connector
 import os
 import requests
-import dateparser
 import datetime
 from dotenv import load_dotenv
 
@@ -54,14 +54,14 @@ def store_data_to_key(key:str, data:str):
         conn.close()
 
 
-def get_docker_services() -> int:
+def get_docker_data() -> list:
     existing_data = get_data_from_key("docker_services")
     if existing_data:
         last_updated = existing_data[2]
         time_since_updated = datetime.datetime.now() - last_updated
 
         if time_since_updated.total_seconds() <= int(existing_data[4])*60:
-            return int(existing_data[3])
+            return ast.literal_eval(existing_data[3])
 
     komodo_auth_headers = {"X-Api-Key": os.environ.get("KOMODO_API_KEY"), "X-Api-Secret": os.environ.get("KOMODO_API_SECRET"), "Content-Type": "application/json"}
 
@@ -71,11 +71,17 @@ def get_docker_services() -> int:
     stack_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetStacksSummary", headers=komodo_auth_headers, json={})
     if stack_summary.status_code != 200:
         print("uptime data get failed with code " +str(stack_summary.status_code)+"\n"+str(deploy_summary.text))
+    container_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetDockerContainersSummary", headers=komodo_auth_headers, json={})
+    if container_summary.status_code != 200:
+        print("uptime data get failed with code " +str(container_summary.status_code)+"\n"+str(container_summary.text))
 
     total_docker_services = int(deploy_summary.json()['running']) + int(stack_summary.json()['running'])
+    docker_containers = int(container_summary.json()['running'])
 
-    store_data_to_key("docker_services",str(total_docker_services))
-    return total_docker_services
+    docker_data = [total_docker_services, docker_containers]
+
+    store_data_to_key("docker_services",str(docker_data))
+    return docker_data
 
 def get_website_uptime() -> float:
     existing_data = get_data_from_key("website_uptime")
