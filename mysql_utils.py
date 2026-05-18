@@ -72,7 +72,7 @@ def get_docker_services() -> int:
     if stack_summary.status_code != 200:
         print("uptime data get failed with code " +str(stack_summary.status_code)+"\n"+str(deploy_summary.text))
 
-    total_docker_services = int(deploy_summary.json()['total']) + int(stack_summary.json()['total'])
+    total_docker_services = int(deploy_summary.json()['running']) + int(stack_summary.json()['running'])
 
     store_data_to_key("docker_services",str(total_docker_services))
     return total_docker_services
