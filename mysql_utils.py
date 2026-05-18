@@ -64,7 +64,11 @@ def get_docker_services() -> int:
     komodo_auth_headers = {"X-Api-Key": os.environ.get("KOMODO_API_KEY"), "X-Api-Secret": os.environ.get("KOMODO_API_SECRET"), "Content-Type": "application/json"}
 
     deploy_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetDeploymentsSummary", headers=komodo_auth_headers, json={})
+    if deploy_summary.status_code != 200:
+        print("uptime data get failed with code" +str(deploy_summary.status_code))
     stack_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetStacksSummary", headers=komodo_auth_headers, json={})
+    if stack_summary.status_code != 200:
+        print("uptime data get failed with code" +str(stack_summary.status_code))
 
     total_docker_services = int(deploy_summary.json()['total']) + int(stack_summary.json()['total'])
 
@@ -83,6 +87,10 @@ def get_website_uptime() -> float:
     grafana_auth_headers = {"Authorization": "Bearer "+os.environ.get("GRAFANA_API_KEY")}
 
     uptime_data = requests.get("https://grafana.thirtyseventh.xyz/api/datasources/uid/efive1u0b5wqob/resources/api/v1/query?query=avg_over_time(monitor_status%7Bmonitor_name%3D%22Personal%20Website%22%7D%5B30d%5D)", headers=grafana_auth_headers)
+
+    if uptime_data.status_code != 200:
+        print("uptime data get failed with code" +str(uptime_data.status_code))
+
     uptime = float(uptime_data.json()['data']['result'][0]['value'][1]) * 100
     uptime = round(uptime, 2)
 
