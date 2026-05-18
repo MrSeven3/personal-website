@@ -51,14 +51,15 @@
             </div>
         </div>
 
-        <h2 class="space-grotesk-header" id="stats-header">stats and stuff</h2>
+        <h2 class="space-grotesk-header right-align" id="stats-header">stats and stuff</h2>
+        <p class="space-grotesk-normal right-align comment">fun fact! this data is injected by flask on page load, meaning no js is needed to see the full page</p>
 
         <div class="stats-section">
             <div class="stats-panel">
-                <h3 class="space-grotesk-header"><span class="text-highlight">23</span> docker services online</h3>
+                <h3 class="space-grotesk-header"><span class="text-highlight">{{ docker_services }}</span> docker services online</h3>
             </div>
-            <div class="stats-panel">
-                <h3 class="space-grotesk-header">this website has <span class="text-highlight">99.324%</span> uptime over the last 30 days</h3>
+            <div class="stats-panel stats-panel-wide">
+                <h3 class="space-grotesk-header">this website has <span class="text-highlight">{{ uptime }}%</span> uptime over the last 30 days</h3>
             </div>
         </div>
     </body>

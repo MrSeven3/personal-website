@@ -55,10 +55,19 @@
     margin-top: 2px;
 }
 
-#stats-header {
+.right-align {
     text-align: right;
     margin-right: 12vw;
     padding-right: 1em;
+}
+
+#stats-header {
+    margin-bottom: 0;
+}
+
+.comment {
+    margin-top: 0;
+    font-size: 14px;
 }
 
 .stats-section {
@@ -72,6 +81,10 @@
     padding-left: 2em;
     padding-right: 2em;
     padding-bottom: 1em;
+}
+
+.stats-panel-wide {
+    grid-column: 2/4;
 }
 
 .text-highlight {
