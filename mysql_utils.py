@@ -51,17 +51,16 @@ def store_data_to_key(key:str, data:str):
     finally:
         conn.close()
 
-def get_docker_services():
+
+def get_docker_services() -> int:
     existing_data = get_data_from_key("docker_services")
     if existing_data:
         last_updated = existing_data[2]
         time_since_updated = datetime.datetime.now() - last_updated
 
         if time_since_updated.total_seconds() <= int(existing_data[4])*60:
-            print("data is still new, returning stored data")
             return int(existing_data[3])
 
-    print("stale data, refreshing")
     komodo_auth_headers = {"X-Api-Key": os.environ.get("KOMODO_API_KEY"), "X-Api-Secret": os.environ.get("KOMODO_API_SECRET"), "Content-Type": "application/json"}
 
     deploy_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetDeploymentsSummary", headers=komodo_auth_headers, json={})
@@ -70,8 +69,22 @@ def get_docker_services():
     total_docker_services = int(deploy_summary.json()['total']) + int(stack_summary.json()['total'])
 
     store_data_to_key("docker_services",str(total_docker_services))
-
     return total_docker_services
 
+def get_website_uptime() -> float:
+    existing_data = get_data_from_key("website_uptime")
+    if existing_data:
+        last_updated = existing_data[2]
+        time_since_updated = datetime.datetime.now() - last_updated
 
-get_docker_services()
+        if time_since_updated.total_seconds() <= int(existing_data[4])*60:
+            return float(existing_data[3])
+
+    grafana_auth_headers = {"Authorization": "Bearer "+os.environ.get("GRAFANA_API_KEY")}
+
+    uptime_data = requests.get("https://grafana.thirtyseventh.xyz/api/datasources/uid/efive1u0b5wqob/resources/api/v1/query?query=avg_over_time(monitor_status%7Bmonitor_name%3D%22Personal%20Website%22%7D%5B30d%5D)", headers=grafana_auth_headers)
+    uptime = float(uptime_data.json()['data']['result'][0]['value'][1]) * 100
+    uptime = round(uptime, 2)
+
+    store_data_to_key("website_uptime",str(uptime))
+    return uptime
