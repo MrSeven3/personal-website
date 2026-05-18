@@ -16,6 +16,8 @@ pool = mysql.connector.pooling.MySQLConnectionPool(
     pool_reset_session=True,
 )
 
+print("db connection initialised")
+
 def get_data_from_key(key:str) -> list|None:
     conn = pool.get_connection()
     try:
