@@ -1,4 +1,6 @@
 import ast
+import time
+
 import mysql.connector
 import os
 import requests
@@ -19,12 +21,18 @@ pool = mysql.connector.pooling.MySQLConnectionPool(
 print("db connection initialised")
 
 def get_data_from_key(key:str) -> list|None:
+    t0 = time.time()
+    print(f"[{key}] pool checkout: {time.time()-t0:.4f}s")
+
     conn = pool.get_connection()
     try:
         cursor = conn.cursor()
         cursor.execute("USE `personal-website`")
+        print(f"[{key}] USE db: {time.time()-t0:.4f}s")
 
         cursor.execute("SELECT * from cached_data WHERE name = %s",(key,))
+        print(f"[{key}] query done: {time.time()-t0:.4f}s")
+
         data = cursor.fetchone() # data is ordered in [id, key, last_updated, data, update_frequency]
         if not data is None:
             return list(data)
@@ -36,6 +44,7 @@ def get_data_from_key(key:str) -> list|None:
     finally:
         cursor.close()
         conn.close()
+        print(f"[{key}] total get_data: {time.time()-t0:.4f}s")
 
 def store_data_to_key(key:str, data:str):
     conn = pool.get_connection()
@@ -48,6 +57,7 @@ def store_data_to_key(key:str, data:str):
         else:
             cursor.execute("INSERT INTO `cached_data` (`id`, `name`, `last_updated`, `data`, `frequency_min`) VALUES (NULL, %s, NOW(), %s, 5)", (key, data,))
 
+        print("updated the database")
         conn.commit()
     except Exception as e:
         print("data storage failed: "+str(e))
