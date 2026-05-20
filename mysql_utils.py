@@ -68,12 +68,15 @@ def get_docker_data() -> list:
     deploy_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetDeploymentsSummary", headers=komodo_auth_headers, json={})
     if deploy_summary.status_code != 200:
         print("uptime data get failed with code " +str(deploy_summary.status_code)+"\n"+str(deploy_summary.text))
+        return [-1,-1]
     stack_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetStacksSummary", headers=komodo_auth_headers, json={})
     if stack_summary.status_code != 200:
         print("uptime data get failed with code " +str(stack_summary.status_code)+"\n"+str(deploy_summary.text))
+        return [-1,-1]
     container_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetDockerContainersSummary", headers=komodo_auth_headers, json={})
     if container_summary.status_code != 200:
         print("uptime data get failed with code " +str(container_summary.status_code)+"\n"+str(container_summary.text))
+        return [-1,-1]
 
     total_docker_services = int(deploy_summary.json()['running']) + int(stack_summary.json()['running'])
     docker_containers = int(container_summary.json()['running'])
@@ -98,6 +101,7 @@ def get_website_uptime() -> float:
 
     if uptime_data.status_code != 200:
         print("uptime data get failed with code " +str(uptime_data.status_code)+"\n"+str(uptime_data.text))
+        return -1
 
     uptime = float(uptime_data.json()['data']['result'][0]['value'][1]) * 100
     uptime = round(uptime, 2)
