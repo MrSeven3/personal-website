@@ -13,7 +13,7 @@ pool = mysql.connector.pooling.MySQLConnectionPool(
     password=os.environ.get('DB_PASSWORD'),
     port=os.environ.get("DB_PORT"),
     pool_size=10,
-    pool_reset_session=True,
+    pool_reset_session=False,
 )
 
 print("db connection initialised")
@@ -34,6 +34,7 @@ def get_data_from_key(key:str) -> list|None:
     except Exception as e:
         print("data retrieval failed: "+str(e))
     finally:
+        cursor.close()
         conn.close()
 
 def store_data_to_key(key:str, data:str):
@@ -51,6 +52,7 @@ def store_data_to_key(key:str, data:str):
     except Exception as e:
         print("data storage failed: "+str(e))
     finally:
+        cursor.close()
         conn.close()
 
 
