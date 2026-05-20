@@ -15,7 +15,7 @@ pool = mysql.connector.pooling.MySQLConnectionPool(
     password=os.environ.get('DB_PASSWORD'),
     port=os.environ.get("DB_PORT"),
     pool_size=10,
-    pool_reset_session=False,
+    pool_reset_session=True,
 )
 
 print("db connection initialised")
@@ -65,9 +65,6 @@ def get_docker_data() -> list[int]:
         last_updated = existing_data[2]
         time_since_updated = datetime.datetime.now() - last_updated
 
-        print(f"db time:     {existing_data[2]}")
-        print(f"python now:  {datetime.datetime.now()}")
-
         if time_since_updated.total_seconds() <= int(existing_data[4])*60:
             return ast.literal_eval(existing_data[3])
         print("data is " + str(time_since_updated.total_seconds()) + " seconds old. refreshing stale data")
@@ -103,9 +100,6 @@ def get_website_uptime() -> float:
     if existing_data:
         last_updated = existing_data[2]
         time_since_updated = datetime.datetime.now() - last_updated
-
-        print(f"db time:     {existing_data[2]}")
-        print(f"python now:  {datetime.datetime.now()}")
 
         if time_since_updated.total_seconds() <= int(existing_data[4])*60:
             return float(existing_data[3])
