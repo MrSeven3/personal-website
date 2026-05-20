@@ -21,18 +21,12 @@ pool = mysql.connector.pooling.MySQLConnectionPool(
 print("db connection initialised")
 
 def get_data_from_key(key:str) -> list|None:
-    t0 = time.time()
-    print(f"[{key}] pool checkout: {time.time()-t0:.4f}s")
-
     conn = pool.get_connection()
     try:
         cursor = conn.cursor()
         cursor.execute("USE `personal-website`")
-        print(f"[{key}] USE db: {time.time()-t0:.4f}s")
 
         cursor.execute("SELECT * from cached_data WHERE name = %s",(key,))
-        print(f"[{key}] query done: {time.time()-t0:.4f}s")
-
         data = cursor.fetchone() # data is ordered in [id, key, last_updated, data, update_frequency]
         if not data is None:
             return list(data)
@@ -44,7 +38,6 @@ def get_data_from_key(key:str) -> list|None:
     finally:
         cursor.close()
         conn.close()
-        print(f"[{key}] total get_data: {time.time()-t0:.4f}s")
 
 def store_data_to_key(key:str, data:str):
     conn = pool.get_connection()
@@ -66,7 +59,7 @@ def store_data_to_key(key:str, data:str):
         conn.close()
 
 
-def get_docker_data() -> list:
+def get_docker_data() -> list[int]:
     existing_data = get_data_from_key("docker_services")
     if existing_data:
         last_updated = existing_data[2]
@@ -74,21 +67,25 @@ def get_docker_data() -> list:
 
         if time_since_updated.total_seconds() <= int(existing_data[4])*60:
             return ast.literal_eval(existing_data[3])
+        print("data is " + str(time_since_updated.total_seconds()) + " seconds old. refreshing stale data")
 
     komodo_auth_headers = {"X-Api-Key": os.environ.get("KOMODO_API_KEY"), "X-Api-Secret": os.environ.get("KOMODO_API_SECRET"), "Content-Type": "application/json"}
-
-    deploy_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetDeploymentsSummary", headers=komodo_auth_headers, json={})
-    if deploy_summary.status_code != 200:
-        print("uptime data get failed with code " +str(deploy_summary.status_code)+"\n"+str(deploy_summary.text))
-        return [-1,-1]
-    stack_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetStacksSummary", headers=komodo_auth_headers, json={})
-    if stack_summary.status_code != 200:
-        print("uptime data get failed with code " +str(stack_summary.status_code)+"\n"+str(deploy_summary.text))
-        return [-1,-1]
-    container_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetDockerContainersSummary", headers=komodo_auth_headers, json={})
-    if container_summary.status_code != 200:
-        print("uptime data get failed with code " +str(container_summary.status_code)+"\n"+str(container_summary.text))
-        return [-1,-1]
+    try:
+        deploy_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetDeploymentsSummary", headers=komodo_auth_headers, json={}, timeout=(1, 2))
+        if deploy_summary.status_code != 200:
+            print("komodo data get failed with code " +str(deploy_summary.status_code)+"\n"+str(deploy_summary.text))
+            return ast.literal_eval(existing_data[3]) if existing_data else [-1,-1] #if its available, return old data on new data fail
+        stack_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetStacksSummary", headers=komodo_auth_headers, json={}, timeout=(1, 2))
+        if stack_summary.status_code != 200:
+            print("komodo data get failed with code " +str(stack_summary.status_code)+"\n"+str(deploy_summary.text))
+            return ast.literal_eval(existing_data[3]) if existing_data else [-1,-1]#if its available, return old data on new data fail
+        container_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetDockerContainersSummary", headers=komodo_auth_headers, json={}, timeout=(1, 2))
+        if container_summary.status_code != 200:
+            print("komodo data get failed with code " +str(container_summary.status_code)+"\n"+str(container_summary.text))
+            return ast.literal_eval(existing_data[3]) if existing_data else [-1,-1]#if its available, return old data on new data fail
+    except requests.exceptions.Timeout:
+        print("komodo docker stats timed out")
+        return ast.literal_eval(existing_data[3]) if existing_data else [-1,-1]#if its available, return old data on new data fail
 
     total_docker_services = int(deploy_summary.json()['running']) + int(stack_summary.json()['running'])
     docker_containers = int(container_summary.json()['running'])
@@ -106,14 +103,18 @@ def get_website_uptime() -> float:
 
         if time_since_updated.total_seconds() <= int(existing_data[4])*60:
             return float(existing_data[3])
+        print("data is " + str(time_since_updated.total_seconds()) + " seconds old. refreshing stale data")
 
     grafana_auth_headers = {"Authorization": "Bearer "+os.environ.get("GRAFANA_API_KEY")}
 
-    uptime_data = requests.get("https://grafana.thirtyseventh.xyz/api/datasources/uid/efive1u0b5wqob/resources/api/v1/query?query=avg_over_time(monitor_status%7Bmonitor_name%3D%22Personal%20Website%22%7D%5B30d%5D)", headers=grafana_auth_headers)
-
-    if uptime_data.status_code != 200:
-        print("uptime data get failed with code " +str(uptime_data.status_code)+"\n"+str(uptime_data.text))
-        return -1
+    try:
+        uptime_data = requests.get("https://grafana.thirtyseventh.xyz/api/datasources/uid/efive1u0b5wqob/resources/api/v1/query?query=avg_over_time(monitor_status%7Bmonitor_name%3D%22Personal%20Website%22%7D%5B30d%5D)", headers=grafana_auth_headers)
+        if uptime_data.status_code != 200:
+            print("uptime data get failed with code " +str(uptime_data.status_code)+"\n"+str(uptime_data.text))
+            float(existing_data[3]) if existing_data else -1 #if its available, return old data on new data fail
+    except requests.exceptions.Timeout:
+        print("grafana timed out")
+        return float(existing_data[3]) if existing_data else -1#if its available, return old data on new data fail
 
     uptime = float(uptime_data.json()['data']['result'][0]['value'][1]) * 100
     uptime = round(uptime, 2)
