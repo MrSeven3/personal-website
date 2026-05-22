@@ -1,6 +1,4 @@
 import ast
-import time
-
 import mysql.connector
 import os
 import requests

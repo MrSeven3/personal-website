@@ -4,8 +4,8 @@
         <title>im thirtyseven</title>
 
         <!--first sheet is for dev, the second will compile properly with flask. (only necessary because sometimes flask does weird stuff with static files)-->
-        <link rel="stylesheet" href="/static/main_page.css">
-<!--        <link rel="stylesheet" href="{{ url_for('static', filename='main_page.css') }}">-->
+        <link rel="stylesheet" href="/static/main_styles.css">
+<!--        <link rel="stylesheet" href="{{ url_for('static', filename='main_styles.css') }}">-->
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,27 +27,27 @@
 
         <div class="info-section">
             <div class="space-grotesk-normal info-panel">
-                <h2 class="space-grotesk-header">stuff ive done</h2>
-                <p>at the moment, on the public internet, very little of significance. i do some stuff for hack club,
+                <h2 class="space-grotesk-header subsection-header">stuff ive done</h2>
+                <p class="subsection-text">at the moment, on the public internet, very little of significance. i do some stuff for hack club,
                     and am currently working on <a href="https://sparkle.dino.icu">sparkle</a> with a few others. <br><br>
                     i made this website (obviously), and its served with flask because its funny. this is actually my
                     first time using html and css, which means the code is probably spaghetti.</p>
             </div>
             <div class="space-grotesk-normal info-panel">
-                <h2 class="space-grotesk-header">general about me</h2>
-                <p>my real name is grayson, im 15 years old. i live in south ontario (vague because i value my illusion of privacy).
+                <h2 class="space-grotesk-header subsection-header">general about me</h2>
+                <p class="subsection-text">my real name is grayson, im 15 years old. i live in south ontario (vague because i value my illusion of privacy).
                     im a "programmer" and i mainly make silly little things and games. i also spend way too much time
                     fighting with slacks api. <br><br>i play far too many video games (namely factory games and beat saber).
                     speaking of video games, you should go play <a href="https://store.steampowered.com/app/753640/Outer_Wilds/">outer
                     wilds</a>! if you couldnt tell, i really like the colour purple. </p>
             </div>
             <div class="space-grotesk-normal info-panel info-panel-large">
-                <h2 class="space-grotesk-header">my homelab</h2>
-                <p>totally overkill lmao. i run voidauth for sso, and have like 12 different compose stacks running stuff.
+                <h2 class="space-grotesk-header subsection-header">my homelab</h2>
+                <p class="subsection-text">totally overkill lmao. i run voidauth for sso, and have like 12 different compose stacks running stuff.
                     the docker containers are managed by komodo (great software). everything with a public domain is through nginx
                     (finally out of proxyauth hell). i run my own git server using gitea, and i run game servers with pterodactyl.
                     theres a public uptime monitor <a href="https://uptime.thirtyseventh.xyz">here</a>. <br><br> i also run a very
-                    glitchy home assistant that is more often broken than functional. i also have a grafana dashboard because
+                    glitchy home assistant that is more often broken than functional. i have a grafana dashboard because
                     i can. all of this runs on a raspberry pi 5 with 8gb of ram, a pi 3b with 1gb, an old gaming laptop
                     with 16gb, a free oracle vps with 24gb, and a small server provided by hack club (<a href="https://hackclub.app">nest</a> is a great
                     resource if you're in hack club)</p>
@@ -63,6 +63,36 @@
             </div>
             <div class="stats-panel stats-panel-right">
                 <h3 class="space-grotesk-header">this website has <span class="text-highlight">{{ uptime }}%</span> uptime over the last 30 days</h3>
+            </div>
+        </div>
+
+
+        <div class="faq-section">
+            <h2 class="space-grotesk-header" id="faq-header">faq</h2>
+
+            <div class="faq-panel space-grotesk-normal">
+                <h3 class="space-grotesk-header subsection-header">how can i contact you?</h3>
+                <p class="subsection-text">if you are apart of hack club, im @thirtyseven on slack. you can email me at
+                    me@graysonv.ca (this is a cloudflare forward, i may be unable to reply)</p>
+            </div>
+            <div class="faq-panel space-grotesk-normal">
+                <h3 class="space-grotesk-header subsection-header">the css is broken/the site looks awful on mobile</h3>
+                <p class="subsection-text">i know. ill try to fix some of the bad css issues, but im never doing intentional
+                    mobile support</p>
+            </div>
+            <div class="faq-panel space-grotesk-normal">
+                <h3 class="space-grotesk-header subsection-header">are these questions actually asked frequently?</h3>
+                <p class="subsection-text">i have no idea! i just either thought the stuff here was funny or didnt have
+                    anywhere else to put it &#175;&#92;&#95;&#40;&#12484;&#41;&#95;&#47;&#175;</p>
+            </div>
+            <div class="faq-panel space-grotesk-normal">
+                <h3 class="space-grotesk-header subsection-header">can you please type with proper punctuation?</h3>
+                <p class="subsection-text">no (if its a job application then yes)</p>
+            </div>
+            <div class="faq-panel space-grotesk-normal">
+                <h3 class="space-grotesk-header subsection-header">wheres the source code?</h3>
+                <p class="subsection-text">i mean i dont think anyone would want to read this awful code, but
+                    <a href="https://github.com/MrSeven3/personal-website">here</a></p>
             </div>
         </div>
     </body>
