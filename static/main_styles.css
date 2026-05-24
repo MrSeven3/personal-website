@@ -1,7 +1,7 @@
 /* this is almost certainly redundant and spaghetti, and shouldnt be in one file, etc etc. its myfirst time with css fight me */
 
-.main-intro {
-    font-size: max(12px,48px);
+.page-header-header {
+    font-size: 48px;
     padding-top: 0;
     flex-direction: column;
 
@@ -25,9 +25,16 @@
     font-size: 16.5px;
 }
 
-.intro {
+.page-header {
     margin: 3rem auto;
     width: 33em;
+}
+
+.blog-header-comment {
+    margin-top: 5px;
+    margin-left: 20px;
+    flex-direction: column;
+    font-size: 16.5px;
 }
 
 .info-section {
