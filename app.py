@@ -8,4 +8,8 @@ def da_main_page():
     website_uptime = mysql_utils.get_website_uptime()
     docker_data = mysql_utils.get_docker_data()
 
-    return render_template("index.html", docker_services=docker_data[0],docker_containers=docker_data[1], uptime=website_uptime)
+    return render_template("index.html",
+                           docker_services=docker_data[0],
+                           docker_containers=docker_data[1],
+                           uptime=website_uptime
+    )

@@ -106,7 +106,7 @@ def get_website_uptime() -> float:
     grafana_auth_headers = {"Authorization": "Bearer "+os.environ.get("GRAFANA_API_KEY")}
 
     try:
-        uptime_data = requests.get("https://grafana.thirtyseventh.xyz/api/datasources/uid/efive1u0b5wqob/resources/api/v1/query?query=avg_over_time(monitor_status%7Bmonitor_name%3D%22Personal%20Website%22%7D%5B30d%5D)", headers=grafana_auth_headers)
+        uptime_data = requests.get("https://grafana.thirtyseventh.xyz/api/datasources/uid/efive1u0b5wqob/resources/api/v1/query?query=avg_over_time(monitor_status%7Bmonitor_name%3D%22Personal%20Website%22%7D%5B30d%5D)", headers=grafana_auth_headers, timeout=(1, 2))
         if uptime_data.status_code != 200:
             print("uptime data get failed with code " +str(uptime_data.status_code)+"\n"+str(uptime_data.text))
             float(existing_data[3]) if existing_data else -1 #if its available, return old data on new data fail
