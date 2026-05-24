@@ -12,6 +12,7 @@ pool = mysql.connector.pooling.MySQLConnectionPool(
     user=os.environ.get("DB_USERNAME"),
     password=os.environ.get('DB_PASSWORD'),
     port=os.environ.get("DB_PORT"),
+    database="personal-website",
     pool_size=10,
     pool_reset_session=True,
 )
@@ -22,7 +23,6 @@ def get_data_from_key(key:str) -> list|None:
     conn = pool.get_connection()
     try:
         cursor = conn.cursor()
-        cursor.execute("USE `personal-website`")
 
         cursor.execute("SELECT * from cached_data WHERE name = %s",(key,))
         data = cursor.fetchone() # data is ordered in [id, key, last_updated, data, update_frequency]
@@ -41,7 +41,6 @@ def store_data_to_key(key:str, data:str):
     conn = pool.get_connection()
     try:
         cursor = conn.cursor()
-        cursor.execute("USE `personal-website`")
 
         if get_data_from_key(key):
             cursor.execute("UPDATE `cached_data` SET `last_updated` = NOW(), `data` = %s WHERE name = %s", (data,key,))
