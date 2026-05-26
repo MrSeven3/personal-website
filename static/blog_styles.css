@@ -1,0 +1,27 @@
+.blog-header-comment {
+    margin-top: 5px;
+    margin-left: 20px;
+    flex-direction: column;
+    font-size: 16.5px;
+}
+
+.blogs-section {
+    margin: auto 16vw;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.blog-list-entry {
+    p {
+        margin-top: 0;
+        color: oklch(0.751 0.0396 273.93);
+    }
+
+    h2 {
+        margin-bottom: 0;
+    }
+}
+
+.blog-list-entry:nth-child(even) {
+    text-align: right;
+}

@@ -1,0 +1,64 @@
+.intro-header {
+    margin-bottom: 0;
+    flex-direction: column;
+    font-size: 24px;
+}
+
+.info-section {
+    padding-left: 12vw;
+    padding-right: 12vw;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.intro-comment {
+    margin-top: 5px;
+    flex-direction: column;
+    font-size: 16.5px;
+}
+
+.info-panel {
+    padding-left: 2vw;
+    padding-right: 2vw;
+    padding-bottom: 1em;
+}
+
+.info-panel-large {
+    grid-column: 1/3;
+}
+
+#stats-header {
+    margin-bottom: 0;
+}
+
+.stats-section {
+    padding-left: 12vw;
+    padding-right: 12vw;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.stats-panel {
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 1em;
+}
+
+.stats-panel-right {
+    text-align: right;
+}
+
+.faq-section {
+    padding-left: 12vw;
+    padding-right: 12vw;
+}
+
+.faq-panel {
+    padding: 0.5em 2em;
+}
+
+#faq-header {
+    margin: 0 1.5vw;
+}
+
+
