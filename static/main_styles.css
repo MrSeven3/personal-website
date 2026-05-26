@@ -1,5 +1,39 @@
 /* this is almost certainly redundant and spaghetti, and shouldnt be in one file, etc etc. its myfirst time with css fight me */
 
+.space-grotesk-single-header {
+    font-family: "Space Grotesk", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 425;
+    font-style: normal;
+    color: oklch(0.751 0.0396 273.93);
+}
+
+.space-grotesk-header {
+    font-family: "Space Grotesk", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 32px;
+    color: oklch(0.751 0.0396 273.93);
+}
+
+h3.space-grotesk-header {
+    font-family: "Space Grotesk", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    color: oklch(0.751 0.0396 273.93);
+    font-size: 24px;
+}
+
+.space-grotesk-normal{
+    font-family: "Space Grotesk", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 350;
+    font-style: normal;
+    color: oklch(0.751 0.0396 273.93);
+}
+
 .page-header-header {
     font-size: 48px;
     padding-top: 0;
@@ -57,36 +91,3 @@ a {
 }
 
 
-.space-grotesk-single-header {
-    font-family: "Space Grotesk", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 425;
-    font-style: normal;
-    color: oklch(0.751 0.0396 273.93);
-}
-
-.space-grotesk-header {
-    font-family: "Space Grotesk", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 32px;
-    color: oklch(0.751 0.0396 273.93);
-}
-
-h3.space-grotesk-header {
-    font-family: "Space Grotesk", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    color: oklch(0.751 0.0396 273.93);
-    font-size: 24px;
-}
-
-.space-grotesk-normal{
-    font-family: "Space Grotesk", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 350;
-    font-style: normal;
-    color: oklch(0.751 0.0396 273.93);
-}
