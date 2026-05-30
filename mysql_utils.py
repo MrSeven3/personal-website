@@ -13,13 +13,13 @@ pool = mysql.connector.pooling.MySQLConnectionPool(
     password=os.environ.get('DB_PASSWORD'),
     port=os.environ.get("DB_PORT"),
     database="personal-website",
-    pool_size=10,
+    pool_size=3,
     pool_reset_session=True,
 )
 
 print("db connection initialised")
 
-def get_data_from_key(key:str) -> list|None:
+def get_cache_data(key:str) -> list | None:
     conn = pool.get_connection()
     try:
         cursor = conn.cursor()
@@ -37,12 +37,12 @@ def get_data_from_key(key:str) -> list|None:
         cursor.close()
         conn.close()
 
-def store_data_to_key(key:str, data:str):
+def store_cache_data(key:str, data:str):
     conn = pool.get_connection()
     try:
         cursor = conn.cursor()
 
-        if get_data_from_key(key):
+        if get_cache_data(key):
             cursor.execute("UPDATE `cached_data` SET `last_updated` = NOW(), `data` = %s WHERE name = %s", (data,key,))
         else:
             cursor.execute("INSERT INTO `cached_data` (`id`, `name`, `last_updated`, `data`, `frequency_min`) VALUES (NULL, %s, NOW(), %s, 5)", (key, data,))
@@ -57,7 +57,7 @@ def store_data_to_key(key:str, data:str):
 
 
 def get_docker_data() -> list[int]:
-    existing_data = get_data_from_key("docker_services")
+    existing_data = get_cache_data("docker_services")
     if existing_data:
         last_updated = existing_data[2]
         time_since_updated = datetime.datetime.now() - last_updated
@@ -89,11 +89,11 @@ def get_docker_data() -> list[int]:
 
     docker_data = [total_docker_services, docker_containers]
 
-    store_data_to_key("docker_services",str(docker_data))
+    store_cache_data("docker_services", str(docker_data))
     return docker_data
 
 def get_website_uptime() -> float:
-    existing_data = get_data_from_key("website_uptime")
+    existing_data = get_cache_data("website_uptime")
     if existing_data:
         last_updated = existing_data[2]
         time_since_updated = datetime.datetime.now() - last_updated
@@ -116,5 +116,5 @@ def get_website_uptime() -> float:
     uptime = float(uptime_data.json()['data']['result'][0]['value'][1]) * 100
     uptime = round(uptime, 2)
 
-    store_data_to_key("website_uptime",str(uptime))
+    store_cache_data("website_uptime", str(uptime))
     return uptime
