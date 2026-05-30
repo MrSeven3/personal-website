@@ -1,3 +1,4 @@
+from werkzeug.exceptions import HTTPException
 from flask import Flask, render_template
 from sentry_sdk.integrations.flask import FlaskIntegration
 from dotenv import load_dotenv
@@ -7,8 +8,8 @@ import os
 
 load_dotenv()
 
-sentry_sdk.init(os.environ.get("SENTRY_DSN"), integrations=[FlaskIntegration()])
 
+sentry_sdk.init(os.environ.get("SENTRY_DSN"), integrations=[FlaskIntegration()])
 app = Flask(__name__)
 
 @app.route("/")
@@ -21,3 +22,11 @@ def da_main_page():
                            docker_containers=docker_data[1],
                            uptime=website_uptime
     )
+
+@app.errorhandler(HTTPException)
+def fancy_error(error):
+    return render_template("error.html",
+                           http_code=error.code,
+                           http_meaning=error.name,
+                           error=error.description
+   ), error.code
