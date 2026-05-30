@@ -6,38 +6,39 @@
 
             <!--first sheet is for dev, the second will compile properly with flask. (only necessary because sometimes flask does weird stuff with static files)-->
         <link rel="stylesheet" href="/static/main_styles.css">
-        <link rel="stylesheet" href="/static/blog_styles.css">
+        <link rel="stylesheet" href="/static/blog_list_styles.css">
 <!--        <link rel="stylesheet" href="{{ url_for('static', filename='main_styles.css') }}">-->
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
 
-        <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
         <script defer src="https://umami.thirtyseventh.xyz/script.js" data-website-id="2094daf6-589d-4e9a-a353-7e466c5f2443"></script>
     </head>
-    <body class="full-page">
+    <body>
         <div class="page-header space-grotesk-normal">
             <div class="page-header-header space-grotesk-single-header">
                 <h1>blog posts</h1>
             </div>
-            <p class="blog-header-comment">my ramblings that are occasionally important</p>
+            <p class="blog-header-comment">my ramblings that are occasionally interesting</p>
         </div>
 
 
+<!--this needs to be replaced with dynamic stuff with flask! this is literally example text-->
         <div class="blogs-section">
             <div class="blog-list-entry space-grotesk-normal">
-                <a href="index.html"><h2 class="space-grotesk-header text-highlight">example entry</h2></a>
+                <a href="../index.html"><h2 class="space-grotesk-header text-highlight">example entry</h2></a>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id tortor vitae lorem luctus placerat sit amet a elit. Vivamus at lectus sed lectus egestas placerat. Interdum et malesuada fames. </p>
             </div>
             <div class="blog-list-entry space-grotesk-normal">
-                <a href="index.html"><h2 class="space-grotesk-header text-highlight">example entry</h2></a>
+                <a href="../index.html"><h2 class="space-grotesk-header text-highlight">example entry</h2></a>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam maximus gravida metus at lobortis. Sed ullamcorper sodales malesuada. Pellentesque et lorem sed ante efficitur elementum sed id lorem. Praesent orci. </p>
             </div>
             <div class="blog-list-entry space-grotesk-normal">
 
-                <a href="index.html"><h2 class="space-grotesk-header text-highlight">example entry</h2></a>
+                <a href="../index.html"><h2 class="space-grotesk-header text-highlight">example entry</h2></a>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris mi urna, porta quis vehicula in, imperdiet sed velit. Sed dictum dui sed est pretium, at lobortis sem sollicitudin. Curabitur lacus. </p>
             </div>
         </div>

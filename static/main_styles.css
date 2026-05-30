@@ -78,7 +78,7 @@ h3.space-grotesk-header {
     color: oklch(0.7176 0.1839 304.77);
 }
 
-.full-page {
+body {
     background: #1e1e2e;
 }
 
