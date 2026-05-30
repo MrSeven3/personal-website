@@ -1,5 +1,13 @@
 from flask import Flask, render_template
+from sentry_sdk.integrations.flask import FlaskIntegration
+from dotenv import load_dotenv
 import mysql_utils
+import sentry_sdk
+import os
+
+load_dotenv()
+
+sentry_sdk.init(os.environ.get("SENTRY_DSN"), integrations=[FlaskIntegration()])
 
 app = Flask(__name__)
 
