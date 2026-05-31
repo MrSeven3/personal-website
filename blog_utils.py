@@ -22,15 +22,15 @@ def get_blog_previews() -> list[list]:
         cursor = conn.cursor()
 
         cursor.execute("SELECT * FROM blogs")
-        blog_entries = cursor.fetchall() #returns a list of tuples. each tuple is like this: (id, blog_title, created_time, edited_time, markdown_text)
+        blog_entries = cursor.fetchall() #returns a list of tuples. each tuple is like this: (id, blog_title, url_slug, created_time, edited_time, markdown_text)
 
-        blog_previews = [] #format is a list of lists, each list is [name, preview text]
+        blog_previews = [] #format is a list of lists, each list is [name, url slug, preview text]
         for blog in blog_entries:
-            blog_text = blog[4].split("\n")[0] #get the first line of markdown
+            blog_text = blog[5].split("\n")[0] #get the first line of markdown
             if len(blog_text) > 200: #cap it to 200 characters
                 blog_text = blog_text[:200]
 
-            blog_info = [blog[1], blog_text+"..."]
+            blog_info = [blog[1], blog[2], blog_text+"..."]
             blog_previews.append(blog_info)
         return blog_previews
     except Exception as e:
@@ -40,4 +40,19 @@ def get_blog_previews() -> list[list]:
         cursor.close()
         conn.close()
 
-get_blog_previews()
+def get_blog_info(slug:str) -> list|None:
+    conn = pool.get_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * from blogs WHERE slug = %s",(slug,))
+
+        info = cursor.fetchone()
+        breakpoint()
+
+        return info
+    except Exception as e:
+        print("blog info gathering failed")
+        sentry_sdk.capture_exception(e)
+    finally:
+        cursor.close()
+        conn.close()
