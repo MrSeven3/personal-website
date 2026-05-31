@@ -1,7 +1,8 @@
 from werkzeug.exceptions import HTTPException
-from flask import Flask, render_template
+from flask import Flask, render_template, abort
 from sentry_sdk.integrations.flask import FlaskIntegration
 from dotenv import load_dotenv
+from markdown_it import MarkdownIt
 import blog_utils
 import cache_utils
 import sentry_sdk
@@ -9,7 +10,7 @@ import os
 
 load_dotenv()
 
-
+md = MarkdownIt()
 sentry_sdk.init(os.environ.get("SENTRY_DSN"), integrations=[FlaskIntegration()])
 app = Flask(__name__)
 
@@ -25,6 +26,7 @@ def da_main_page():
     )
 
 @app.route("/blogs")
+@app.route("/blogs/")
 def blog_list():
     blogs = blog_utils.get_blog_previews()
 
@@ -32,6 +34,25 @@ def blog_list():
     for blog in blogs:
         final_list += '<div class="blog-list-entry space-grotesk-normal"><a href="/blogs/'+blog[1]+'"><h2 class="space-grotesk-header text-highlight">'+blog[0]+'</h2></a><p>'+blog[2]+'</p></div>\n'
     return render_template("/blog/blog_list.html", blog_list=final_list)
+
+@app.route("/blogs/<slug>")
+def blog_entry(slug):
+    blog_info = blog_utils.get_blog_info(slug)
+    if blog_info is None:
+        abort(404)
+
+    blog_info = list(blog_info)
+    if blog_info[4] is None:
+        blog_info[4] = "Never"
+
+    return render_template("/blog/blog_template.html",
+                           blog_title=blog_info[1],
+                           created_time=blog_info[3],
+                           updated_time=blog_info[4],
+                           blog_html=md.render(blog_info[5])
+   )
+
+
 
 @app.errorhandler(HTTPException)
 def fancy_error(error):
