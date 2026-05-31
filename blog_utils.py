@@ -47,12 +47,7 @@ def get_blog_info(slug:str) -> list|None:
         cursor.execute("SELECT * from blogs WHERE slug = %s",(slug,))
 
         info = cursor.fetchone()
-        breakpoint()
-
         return info
-    except Exception as e:
-        print("blog info gathering failed")
-        sentry_sdk.capture_exception(e)
     finally:
         cursor.close()
         conn.close()
