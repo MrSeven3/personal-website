@@ -1,0 +1,23 @@
+.blog-header {
+    margin: auto 16vw;
+    h1 {
+        margin-bottom: 0.5vw;
+    }
+    p {
+        margin: 0 auto;
+    }
+    span {
+        margin: 0 auto;
+    }
+}
+
+#created-span {
+    margin-left: 0.85em;
+}
+#updated-span {
+    margin-left: 0.5em;
+}
+
+hr {
+    margin: 1vw 16vw;
+}
