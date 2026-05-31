@@ -1,6 +1,5 @@
 import mysql.connector
 import os
-import datetime
 from dotenv import load_dotenv
 import sentry_sdk
 
@@ -48,6 +47,15 @@ def get_blog_info(slug:str) -> list|None:
 
         info = cursor.fetchone()
         return info
+    finally:
+        cursor.close()
+        conn.close()
+
+def create_blog(title:str,slug:str,markdown:str):
+    conn = pool.get_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO blogs VALUES (`id`, `title`, `slug`, `published`, `blog_markdown`) VALUES (NULL, %s, %s, NOW(), %s)",(title,slug,markdown,))
     finally:
         cursor.close()
         conn.close()
