@@ -2,7 +2,7 @@ from werkzeug.exceptions import HTTPException
 from flask import Flask, render_template
 from sentry_sdk.integrations.flask import FlaskIntegration
 from dotenv import load_dotenv
-import mysql_utils
+import cache_utils
 import sentry_sdk
 import os
 
@@ -14,8 +14,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def da_main_page():
-    website_uptime = mysql_utils.get_website_uptime()
-    docker_data = mysql_utils.get_docker_data()
+    website_uptime = cache_utils.get_website_uptime()
+    docker_data = cache_utils.get_docker_data()
 
     return render_template("index.html",
                            docker_services=docker_data[0],

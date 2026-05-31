@@ -3,6 +3,7 @@ import mysql.connector
 import os
 import requests
 import datetime
+import sentry_sdk
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -13,7 +14,7 @@ pool = mysql.connector.pooling.MySQLConnectionPool(
     password=os.environ.get('DB_PASSWORD'),
     port=os.environ.get("DB_PORT"),
     database="personal-website",
-    pool_size=3,
+    pool_size=2,
     pool_reset_session=True,
 )
 
@@ -33,6 +34,7 @@ def get_cache_data(key:str) -> list | None:
 
     except Exception as e:
         print("data retrieval failed: "+str(e))
+        sentry_sdk.capture_exception(e)
     finally:
         cursor.close()
         conn.close()
@@ -51,6 +53,7 @@ def store_cache_data(key:str, data:str):
         conn.commit()
     except Exception as e:
         print("data storage failed: "+str(e))
+        sentry_sdk.capture_exception(e)
     finally:
         cursor.close()
         conn.close()
