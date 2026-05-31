@@ -1,0 +1,43 @@
+import mysql.connector
+import os
+import datetime
+from dotenv import load_dotenv
+import sentry_sdk
+
+load_dotenv()
+
+pool = mysql.connector.pooling.MySQLConnectionPool(
+    host=os.environ.get("DB_HOST"),
+    user=os.environ.get("DB_USERNAME"),
+    password=os.environ.get('DB_PASSWORD'),
+    port=os.environ.get("DB_PORT"),
+    database="personal-website",
+    pool_size=2,
+    pool_reset_session=True,
+)
+
+def get_blog_previews() -> list[list]:
+    conn = pool.get_connection()
+    try:
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM blogs")
+        blog_entries = cursor.fetchall() #returns a list of tuples. each tuple is like this: (id, blog_title, created_time, edited_time, markdown_text)
+
+        blog_previews = [] #format is a list of lists, each list is [name, preview text]
+        for blog in blog_entries:
+            blog_text = blog[4].split("\n")[0] #get the first line of markdown
+            if len(blog_text) > 200: #cap it to 200 characters
+                blog_text = blog_text[:200]
+
+            blog_info = [blog[1], blog_text+"..."]
+            blog_previews.append(blog_info)
+        return blog_previews
+    except Exception as e:
+        print("blog list gathering failed")
+        sentry_sdk.capture_exception(e)
+    finally:
+        cursor.close()
+        conn.close()
+
+get_blog_previews()
