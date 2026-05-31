@@ -62,12 +62,12 @@ def get_docker_data() -> list[int]:
         last_updated = existing_data[2]
         time_since_updated = datetime.datetime.now() - last_updated
 
-        if time_since_updated.total_seconds() <= int(existing_data[4])*60:
+        if time_since_updated.total_seconds() <= int(existing_data[4])*60: #check if i can use the existing data, and return it if i can
             return ast.literal_eval(existing_data[3])
         print("data is " + str(time_since_updated.total_seconds()) + " seconds old. refreshing stale data")
 
     komodo_auth_headers = {"X-Api-Key": os.environ.get("KOMODO_API_KEY"), "X-Api-Secret": os.environ.get("KOMODO_API_SECRET"), "Content-Type": "application/json"}
-    try:
+    try: #pulls service and container summaries from komodo, returning existing data if it fails, or -1 if there is no existing data
         deploy_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetDeploymentsSummary", headers=komodo_auth_headers, json={}, timeout=(1, 2))
         if deploy_summary.status_code != 200:
             print("komodo data get failed with code " +str(deploy_summary.status_code)+"\n"+str(deploy_summary.text))
@@ -98,13 +98,13 @@ def get_website_uptime() -> float:
         last_updated = existing_data[2]
         time_since_updated = datetime.datetime.now() - last_updated
 
-        if time_since_updated.total_seconds() <= int(existing_data[4])*60:
+        if time_since_updated.total_seconds() <= int(existing_data[4])*60: #check if i can use the existing data, and return it if i can
             return float(existing_data[3])
         print("data is " + str(time_since_updated.total_seconds()) + " seconds old. refreshing stale data")
 
     grafana_auth_headers = {"Authorization": "Bearer "+os.environ.get("GRAFANA_API_KEY")}
 
-    try:
+    try: #pull the uptime data from prometheus using grafana. prometheus gets it from uptime kuma, tho the calculations are different, so this is slightly wrong. TODO: either fix prometheus or find a way to poll uptime kuma directly
         uptime_data = requests.get("https://grafana.thirtyseventh.xyz/api/datasources/uid/efive1u0b5wqob/resources/api/v1/query?query=avg_over_time(monitor_status%7Bmonitor_name%3D%22Personal%20Website%22%7D%5B30d%5D)", headers=grafana_auth_headers, timeout=(1, 2))
         if uptime_data.status_code != 200:
             print("uptime data get failed with code " +str(uptime_data.status_code)+"\n"+str(uptime_data.text))
