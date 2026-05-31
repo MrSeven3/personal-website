@@ -26,21 +26,8 @@
         </div>
 
 
-<!--this needs to be replaced with dynamic stuff with flask! this is literally example text-->
         <div class="blogs-section">
-            <div class="blog-list-entry space-grotesk-normal">
-                <a href="../index.html"><h2 class="space-grotesk-header text-highlight">example entry</h2></a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id tortor vitae lorem luctus placerat sit amet a elit. Vivamus at lectus sed lectus egestas placerat. Interdum et malesuada fames. </p>
-            </div>
-            <div class="blog-list-entry space-grotesk-normal">
-                <a href="../index.html"><h2 class="space-grotesk-header text-highlight">example entry</h2></a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam maximus gravida metus at lobortis. Sed ullamcorper sodales malesuada. Pellentesque et lorem sed ante efficitur elementum sed id lorem. Praesent orci. </p>
-            </div>
-            <div class="blog-list-entry space-grotesk-normal">
-
-                <a href="../index.html"><h2 class="space-grotesk-header text-highlight">example entry</h2></a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris mi urna, porta quis vehicula in, imperdiet sed velit. Sed dictum dui sed est pretium, at lobortis sem sollicitudin. Curabitur lacus. </p>
-            </div>
+            {{ blog_list | safe }}
         </div>
     </body>
 </html>
