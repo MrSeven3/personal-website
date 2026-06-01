@@ -1,21 +1,21 @@
 .blog-header {
-    margin: auto 16vw;
+    margin: 2vw 16vw auto;
+
     h1 {
         margin-bottom: 0.5vw;
     }
     p {
-        margin: 0 auto;
+        margin: 0;
     }
-    span {
-        margin: 0 auto;
+
+    div {
+        display: flex;
+
     }
 }
 
-#created-span {
-    margin-left: 0.85em;
-}
-#updated-span {
-    margin-left: 0.5em;
+#updated-time {
+    margin-left: auto;
 }
 
 .blog-main {
