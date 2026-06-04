@@ -55,7 +55,23 @@ def create_blog(title:str,slug:str,markdown:str):
     conn = pool.get_connection()
     try:
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO blogs VALUES (`id`, `title`, `slug`, `published`, `blog_markdown`) VALUES (NULL, %s, %s, NOW(), %s)",(title,slug,markdown,))
+        cursor.execute("INSERT INTO blogs (`id`, `title`, `slug`, `published`, `blog_markdown`) VALUES (NULL, %s, %s, NOW(), %s)",(title,slug,markdown,))
+
+        conn.commit()
     finally:
         cursor.close()
         conn.close()
+
+if __name__ == "__main__":
+    blog_title = input("title: ")
+    blog_slug = input("slug: ")
+
+    file_location = input("markdown file: ")
+    if not os.path.exists(file_location):
+        print("file not found")
+        exit()
+
+    markdown_file = open(file_location)
+    markdown = markdown_file.read()
+
+    create_blog(blog_title, blog_slug, markdown)
