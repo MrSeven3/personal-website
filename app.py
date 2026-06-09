@@ -11,7 +11,7 @@ import linkify_it
 
 load_dotenv()
 
-md = MarkdownIt("gfm-like")
+md = MarkdownIt("gfm-like2")
 sentry_sdk.init(os.environ.get("SENTRY_DSN"), integrations=[FlaskIntegration()])
 app = Flask(__name__)
 
