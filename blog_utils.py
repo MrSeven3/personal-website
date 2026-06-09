@@ -74,4 +74,10 @@ if __name__ == "__main__":
     markdown_file = open(file_location)
     markdown = markdown_file.read()
 
+    if get_blog_info(blog_slug):
+        print("that slug is already in use, rename it or press enter to exit. you can also type the same thing to overwrite the existing info")
+        blog_slug = input("new slug: ")
+        if blog_slug == "":
+            exit()
+
     create_blog(blog_title, blog_slug, markdown)
