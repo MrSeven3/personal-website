@@ -1,8 +1,10 @@
 .blog-header {
-    margin: 2vw 16vw auto;
+    margin: 5vw 16vw auto;
 
     h1 {
         margin-bottom: 0.5vw;
+        font-size: 48px;
+        text-align: center;
     }
     p {
         margin: 0;
@@ -10,7 +12,6 @@
 
     div {
         display: flex;
-
     }
 }
 
@@ -19,5 +20,14 @@
 }
 
 .blog-main {
-    margin: 4em 16vw auto;
+    margin: 1em 16vw auto;
+    p {
+        font-size: 24px;
+    }
+    h2 {
+        font-size: 36px;
+    }
+    h3 {
+        font-size: 30px;
+    }
 }
