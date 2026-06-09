@@ -7,10 +7,11 @@ import blog_utils
 import cache_utils
 import sentry_sdk
 import os
+import linkify_it
 
 load_dotenv()
 
-md = MarkdownIt()
+md = MarkdownIt("gfm-like")
 sentry_sdk.init(os.environ.get("SENTRY_DSN"), integrations=[FlaskIntegration()])
 app = Flask(__name__)
 
@@ -41,14 +42,8 @@ def blog_entry(slug):
     if blog_info is None:
         abort(404)
 
-    blog_info = list(blog_info)
-    if blog_info[4] is None:
-        blog_info[4] = "Never"
-
     return render_template("/blog/blog_template.html",
                            blog_title=blog_info[1],
-                           created_time=blog_info[3],
-                           updated_time=blog_info[4],
                            blog_html=md.render(blog_info[5])
    )
 
