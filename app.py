@@ -12,6 +12,8 @@ app = Flask(__name__)
 
 from routes.main import main_routes
 from routes.blog import blog_routes
+from routes.admin import admin_routes
 
 app.register_blueprint(main_routes)
 app.register_blueprint(blog_routes)
+app.register_blueprint(admin_routes)
