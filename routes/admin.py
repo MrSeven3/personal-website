@@ -1,5 +1,5 @@
-import requests
 from flask import Blueprint, redirect, request, abort, session
+import requests
 import secrets
 import os
 
@@ -7,6 +7,9 @@ admin_routes = Blueprint("admin", __name__, url_prefix="/admin")
 
 @admin_routes.route("/login")
 def sso_login_path():
+    if session['logged_in']:
+        return redirect("/admin")
+
     state = secrets.token_urlsafe(32)
     session["oauth_state"] = state
 
@@ -16,6 +19,9 @@ def sso_login_path():
 
 @admin_routes.route("/login/oauth")
 def handle_oauth():
+    if session['logged_in']:
+        return redirect("/admin")
+
     error = request.args.get("error")
     if error == "access_denied": abort(403)
     elif error: abort(500)
@@ -35,7 +41,10 @@ def handle_oauth():
     }
 
     response = requests.post("https://" + os.environ.get("OAUTH_DOMAIN") + "/oidc/token",data=token_request_payload)
-    if response.json()['error'] == "invalid_grant": abort(403)
-    elif response.json()['error']: abort(500)
+    error = response.json().get("error")
+    if error == "invalid_grant": abort(403)
+    elif error: abort(500)
+
+    session["logged_in"] = True
 
     return redirect("/admin")

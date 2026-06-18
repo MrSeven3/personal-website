@@ -1,5 +1,6 @@
 from flask import Flask
 from sentry_sdk.integrations.flask import FlaskIntegration
+from flask_session import Session
 from dotenv import load_dotenv
 import sentry_sdk
 import os
@@ -10,6 +11,9 @@ sentry_sdk.init(os.environ.get("SENTRY_DSN"), integrations=[FlaskIntegration()])
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY")
+
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 from routes.main import main_routes
 from routes.blog import blog_routes
