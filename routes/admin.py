@@ -1,7 +1,7 @@
-from flask import Blueprint, redirect, request, abort, session
+from flask import Blueprint, redirect, request, abort, session, render_template
 import requests
 import secrets
-import os
+import os, shutil
 
 admin_routes = Blueprint("admin", __name__, url_prefix="/admin")
 
@@ -48,3 +48,22 @@ def handle_oauth():
     session["logged_in"] = True
 
     return redirect("/admin")
+
+@admin_routes.route("/")
+def most_basic_landing_page_ever_because_only_i_will_see_it():
+    if not session.get('logged_in'):
+        return redirect("/admin/login")
+
+    return render_template("admin/landing.html")
+
+@admin_routes.route("/clear-sessions")
+def clear_all_sessions():
+    if not session.get('logged_in'):
+        print("user isnt logged in, redirecting")
+        return redirect("/admin/login")
+
+    shutil.rmtree("flask_session")
+    os.mkdir("flask_session")
+    session.clear()
+
+    return redirect("/")
