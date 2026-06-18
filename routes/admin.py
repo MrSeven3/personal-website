@@ -1,3 +1,4 @@
+import requests
 from flask import Blueprint, redirect, request, abort, session
 import secrets
 import os
@@ -10,7 +11,7 @@ def sso_login_path():
     session["oauth_state"] = state
 
     oauth_redirect_url = "https://" + os.environ.get("OAUTH_DOMAIN") + "/oidc/auth?client_id="+os.environ.get("OAUTH_CLIENT_ID")+"&redirect_uri="+os.environ.get("OAUTH_REDIRECT_URI")+"&response_type=code&scope=openid&state="+str(state)
-    print("redirecting to sso")
+
     return redirect(oauth_redirect_url)
 
 @admin_routes.route("/login/oauth")
@@ -20,9 +21,21 @@ def handle_oauth():
     elif error: abort(500)
 
     if request.args.get("state") != session.pop("oauth_state", None):
-        abort(403)
+        abort(401)
 
+    exchange_code = request.args.get("code")
 
-    authorization_code = request.args.get("code")
+    #validate that the auth code is real by exchanging for a token
+    token_request_payload = {
+        "client_id": str(os.environ.get("OAUTH_CLIENT_ID")),
+        "client_secret": str(os.environ.get("OAUTH_CLIENT_SECRET")),
+        "redirect_uri": str(os.environ.get("OAUTH_REDIRECT_URI")),
+        "code": str(exchange_code),
+        "grant_type": "authorization_code"
+    }
 
-    return 200
+    response = requests.post("https://" + os.environ.get("OAUTH_DOMAIN") + "/oidc/token",data=token_request_payload)
+    if response.json()['error'] == "invalid_grant": abort(403)
+    elif response.json()['error']: abort(500)
+
+    return redirect("/admin")
