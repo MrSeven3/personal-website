@@ -7,7 +7,7 @@ admin_routes = Blueprint("admin", __name__, url_prefix="/admin")
 
 @admin_routes.route("/login")
 def sso_login_path():
-    if session['logged_in']:
+    if session.get('logged_in'):
         return redirect("/admin")
 
     state = secrets.token_urlsafe(32)
@@ -19,7 +19,7 @@ def sso_login_path():
 
 @admin_routes.route("/login/oauth")
 def handle_oauth():
-    if session['logged_in']:
+    if session.get('logged_in'):
         return redirect("/admin")
 
     error = request.args.get("error")
