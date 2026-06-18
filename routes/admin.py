@@ -19,6 +19,9 @@ def handle_oauth():
     if error == "access_denied": abort(403)
     elif error: abort(500)
 
+    if request.args.get("state") != session.pop("oauth_state", None):
+        abort(403)
+
 
     authorization_code = request.args.get("code")
 
