@@ -31,6 +31,24 @@
     }
 }
 
+.top-right-anchor {
+    text-align: center;
+    padding: 1rem;
+    width: fit-content;
+
+    display: flex;
+    gap: 1.5vw;
+
+    position: absolute;
+    top: 0.35vw;
+    right: 1vw;
+
+    a {
+        font-size: 24px;
+	    color: oklch(0.7176 0.1839 304.77);
+    }
+}
+
 body {
     background: #1e1e2e;
 }
