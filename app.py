@@ -5,10 +5,11 @@ import sentry_sdk
 import os
 
 
-
 load_dotenv()
 sentry_sdk.init(os.environ.get("SENTRY_DSN"), integrations=[FlaskIntegration()])
+
 app = Flask(__name__)
+app.secret_key = os.environ.get("FLASK_SECRET_KEY")
 
 from routes.main import main_routes
 from routes.blog import blog_routes
