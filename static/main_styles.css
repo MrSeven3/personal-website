@@ -73,18 +73,20 @@ h3.space-grotesk-header {
     font-size: 14px;
 }
 
-.top-right-button {
-    background-color: oklch(0.7176 0.1839 304.77);
+.top-right-anchor {
+
     text-align: center;
     padding: 1rem;
     width: fit-content;
 
-    position: fixed;
-    top: 1vw;
+    display: flex;
+    gap: 1.5vw;
+
+    position: absolute;
+    top: 0.35vw;
     right: 1vw;
 
     a {
-        color: #1e1e2e;
         font-size: 24px;
     }
 }
@@ -93,6 +95,8 @@ h3.space-grotesk-header {
     text-align: center;
     padding: 1rem;
     width: fit-content;
+
+
 
     position: fixed;
     top: 1vw;

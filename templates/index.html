@@ -3,11 +3,8 @@
     <head>
         <title>im thirtyseven</title>
 
-        <!--first sheet is for dev, the second will compile properly with flask. (only necessary because sometimes flask does weird stuff with static files)-->
         <link rel="stylesheet" href="/static/main_styles.css">
         <link rel="stylesheet" href="/static/about_styles.css">
-<!--        <link rel="stylesheet" href="{{ url_for('static', filename='main_styles.css') }}">-->
-<!--        <link rel="stylesheet" href="{{ url_for('static', filename='about_styles.css') }}">-->
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,6 +15,12 @@
         <script defer src="https://umami.thirtyseventh.xyz/script.js" data-performance="true" data-auto-track="true" data-website-id="2094daf6-589d-4e9a-a353-7e466c5f2443"></script>
     </head>
     <body>
+        <div class="top-right-anchor space-grotesk-normal">
+            <a href="/">home</a>
+            <a href="/blogs">blog</a>
+            <a href="https://tangled.org/did:plc:36m4dpd2zsudmq67x53hpx44" target="_blank">source</a>
+        </div>
+
         <div class="page-header space-grotesk-normal">
             <p class="intro-header">hey! call me</p>
             <div class="page-header-header space-grotesk-single-header">
@@ -25,10 +28,6 @@
             </div>
 
             <p class="intro-comment">i also go by mrseven, seventythree, seven, and variations of those</p>
-        </div>
-
-        <div class="top-right-button space-grotesk-normal">
-            <a href="/blogs">my blog!</a>
         </div>
 
         <div class="info-section">
