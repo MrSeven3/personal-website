@@ -71,3 +71,22 @@ def get_all_well_known_entries() -> list[str]|None:
         cursor.close()
         conn.close()
 
+def delete_well_known_entry(slug:str,domain:str):
+    conn = pool.get_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT 1 FROM well_known WHERE slug = %s AND domain = %s",(slug,domain,))
+
+        if not cursor.fetchone():
+            return False
+
+        cursor.execute("DELETE FROM well_known WHERE slug = %s AND domain = %s",(slug,domain,))
+        conn.commit()
+
+    except Exception as e:
+        print("deleting well known entry failed")
+        sentry_sdk.capture_exception(e)
+        return None
+    finally:
+        cursor.close()
+        conn.close()
