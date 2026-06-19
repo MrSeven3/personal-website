@@ -51,3 +51,23 @@ def get_well_known_entry(slug:str,domain:str) -> str|None:
     finally:
         cursor.close()
         conn.close()
+
+def get_all_well_known_entries() -> list[str]|None:
+    conn = pool.get_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM well_known")
+
+        data = cursor.fetchall()
+
+        if data: return data
+        else: return None
+
+    except Exception as e:
+        print("retrieving all well known entries failed")
+        sentry_sdk.capture_exception(e)
+        return None
+    finally:
+        cursor.close()
+        conn.close()
+
