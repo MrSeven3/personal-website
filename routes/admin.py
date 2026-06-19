@@ -79,6 +79,7 @@ def dynamic_well_known_config():
     import well_known_utils
     if request.method == "GET":
         entry_list = well_known_utils.get_all_well_known_entries()
+        if entry_list is None: return render_template("admin/well-known-config.html")
 
         entry_list_html = ""
         for entry in entry_list:
