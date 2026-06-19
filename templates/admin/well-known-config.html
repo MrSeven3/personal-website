@@ -16,20 +16,34 @@
         <script defer src="https://umami.thirtyseventh.xyz/script.js" data-performance="true" data-auto-track="true" data-website-id="2094daf6-589d-4e9a-a353-7e466c5f2443"></script>
 
     </head>
-    <body class="space-grotesk-normal ">
+    <body class="space-grotesk-normal" style="margin:0 16vw;">
         <p>new well known entry vvv</p>
         <form method="post">
-            <label for="slug">slug:</label><br>
-            <input type="text" id="slug" name="slug"><br>
-            <label for="content">content:</label><br>
-            <input type="text" id="content" name="content"><br>
-            <label for="domain">domain:</label><br>
-            <input type="text" id="domain" name="domain">
+            <label for="cslug">slug:</label><br>
+            <input type="text" id="cslug" name="slug"><br>
+            <label for="ccontent">content:</label><br>
+            <input type="text" id="ccontent" name="content"><br>
+            <label for="cdomain">domain:</label><br>
+            <input type="text" id="cdomain" name="domain">
 
             <br><br>
 
             <input type="submit" value="Submit">
         </form>
+        <p>remove well known entry vvv</p>
+        <form method="post" action="remove-well-known-entry">
+            <label for="rslug">slug:</label><br>
+            <input type="text" id="rslug" name="slug"><br>
+            <label for="rdomain">domain:</label><br>
+            <input type="text" id="rdomain" name="domain">
+            <br><br>
+            <input type="submit" value="delete">
+        </form>
+
+        <div>
+            <p>all the entries vvv</p>
+            {{ entry_list | safe }}
+        </div>
 
     </body>
 </html>

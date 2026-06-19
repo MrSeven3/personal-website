@@ -71,9 +71,19 @@ def clear_all_sessions():
 
 @admin_routes.route("/well-known-config", methods=['GET','POST'])
 def dynamic_well_known_config():
+    if not session.get('logged_in'):
+        print("user isnt logged in, redirecting")
+        return redirect("/admin/login")
+
     import well_known_utils
     if request.method == "GET":
-        return render_template("admin/well-known-config.html")
+        entry_list = well_known_utils.get_all_well_known_entries()
+
+        entry_list_html = ""
+        for entry in entry_list:
+            entry_list_html += '<div><p style="white-space-collapse: preserve-spaces; margin: 0 auto;">slug: '+entry[1]+'        domain: '+entry[3]+'</p><p style="margin: 0 auto;">content: '+entry[2]+'</p></div>'
+
+        return render_template("admin/well-known-config.html",entry_list=entry_list_html)
 
     slug = request.form['slug']
     content = request.form['content']
