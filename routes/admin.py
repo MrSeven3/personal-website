@@ -2,6 +2,7 @@ from flask import Blueprint, redirect, request, abort, session, render_template
 import requests
 import secrets
 import os, shutil
+import urllib.parse
 
 admin_routes = Blueprint("admin", __name__, url_prefix="/admin")
 
@@ -67,3 +68,16 @@ def clear_all_sessions():
     session.clear()
 
     return redirect("/")
+
+@admin_routes.route("/well-known-config", methods=['GET','POST'])
+def dynamic_well_known_config():
+    import well_known_utils
+    if request.method == "GET":
+        return render_template("admin/well-known-config.html")
+
+    slug = request.form['slug']
+    content = request.form['content']
+    domain = urllib.parse.urlsplit(request.base_url).hostname
+
+
+    return redirect("/admin/well-known-config")
