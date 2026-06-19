@@ -85,10 +85,31 @@ def dynamic_well_known_config():
 
         return render_template("admin/well-known-config.html",entry_list=entry_list_html)
 
-    slug = request.form['slug']
-    content = request.form['content']
-    domain = request.form['domain']
+    slug = request.form.get('slug')
+    content = request.form.get('content')
+    domain = request.form.get('domain')
+
+    if slug is None or content is None or domain is None or slug == "" or content == "" or domain == "":
+        abort(400)
 
     well_known_utils.add_well_known_entry(slug,content,domain)
+
+    return redirect("/admin/well-known-config")
+
+@admin_routes.route("/well-known-config/remove-well-known-entry",methods=['POST'])
+def remove_well_known_config():
+    if not session.get('logged_in'):
+        print("user isnt logged in, redirecting")
+        return redirect("/admin/login")
+
+    import well_known_utils
+
+    slug = request.form.get('slug')
+    domain = request.form.get('domain')
+
+    if slug is None or domain is None or slug == "" or domain == "":
+        abort(400)
+
+    well_known_utils.delete_well_known_entry(slug,domain)
 
     return redirect("/admin/well-known-config")
