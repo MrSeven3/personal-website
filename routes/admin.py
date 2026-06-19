@@ -77,7 +77,8 @@ def dynamic_well_known_config():
 
     slug = request.form['slug']
     content = request.form['content']
-    domain = urllib.parse.urlsplit(request.base_url).hostname
+    domain = request.form['domain']
 
+    well_known_utils.add_well_known_entry(slug,content,domain)
 
     return redirect("/admin/well-known-config")
