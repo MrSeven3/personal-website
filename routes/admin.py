@@ -10,6 +10,8 @@ admin_routes = Blueprint("admin", __name__, url_prefix="/admin")
 def sso_login_path():
     if session.get('logged_in'):
         return redirect("/admin")
+    if urllib.parse.urlsplit(request.base_url).hostname != os.environ.get("APP_DOMAIN"):
+        abort(401)
 
     state = secrets.token_urlsafe(32)
     session["oauth_state"] = state
