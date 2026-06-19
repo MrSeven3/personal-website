@@ -17,8 +17,10 @@ Session(app)
 
 from routes.main import main_routes
 from routes.blog import blog_routes
-# from routes.admin import admin_routes
+from routes.admin import admin_routes
+from routes.well_known import dynamic_well_known_routes
 
 app.register_blueprint(main_routes)
 app.register_blueprint(blog_routes)
-# app.register_blueprint(admin_routes)
+app.register_blueprint(admin_routes)
+app.register_blueprint(dynamic_well_known_routes)
