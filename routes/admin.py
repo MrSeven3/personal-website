@@ -42,6 +42,7 @@ def handle_oauth():
     }
 
     response = requests.post("https://" + os.environ.get("OAUTH_DOMAIN") + "/oidc/token",data=token_request_payload)
+    if response.status_code != 200: abort(500)
     error = response.json().get("error")
     if error == "invalid_grant": abort(403)
     elif error: abort(500)
