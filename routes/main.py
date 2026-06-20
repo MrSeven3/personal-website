@@ -1,13 +1,13 @@
 from werkzeug.exceptions import HTTPException
 from flask import Blueprint, render_template
-import cache_utils
+import utils.cache
 
 main_routes = Blueprint("main", __name__)
 
 @main_routes.route("/")
 def da_main_page():
-    website_uptime = cache_utils.get_website_uptime()
-    docker_data = cache_utils.get_docker_data()
+    website_uptime = utils.cache.get_website_uptime()
+    docker_data = utils.cache.get_docker_data()
     return render_template("index.html",
                            docker_services=docker_data[0],
                            docker_containers=docker_data[1],

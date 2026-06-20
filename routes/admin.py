@@ -78,9 +78,9 @@ def dynamic_well_known_config():
         print("user isnt logged in, redirecting")
         return redirect("/admin/login")
 
-    import well_known_utils
+    import utils.well_known
     if request.method == "GET":
-        entry_list = well_known_utils.get_all_well_known_entries()
+        entry_list = utils.well_known.get_all_well_known_entries()
         if entry_list is None: return render_template("admin/well-known-config.html")
 
         entry_list_html = ""
@@ -96,7 +96,7 @@ def dynamic_well_known_config():
     if slug is None or content is None or domain is None or slug == "" or content == "" or domain == "":
         abort(400)
 
-    well_known_utils.add_well_known_entry(slug,content,domain)
+    utils.well_known.add_well_known_entry(slug, content, domain)
 
     return redirect("/admin/well-known-config")
 
@@ -106,7 +106,7 @@ def remove_well_known_config():
         print("user isnt logged in, redirecting")
         return redirect("/admin/login")
 
-    import well_known_utils
+    import utils.well_known
 
     slug = request.form.get('slug')
     domain = request.form.get('domain')
@@ -114,6 +114,6 @@ def remove_well_known_config():
     if slug is None or domain is None or slug == "" or domain == "":
         abort(400)
 
-    well_known_utils.delete_well_known_entry(slug,domain)
+    utils.well_known.delete_well_known_entry(slug, domain)
 
     return redirect("/admin/well-known-config")

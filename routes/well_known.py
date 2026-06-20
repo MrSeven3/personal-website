@@ -7,8 +7,8 @@ dynamic_well_known_routes = Blueprint("dyn-well-known",__name__)
 def serve_dynamic_well_known(file):
     domain = urllib.parse.urlsplit(request.base_url).hostname
 
-    import well_known_utils
-    contents = well_known_utils.get_well_known_entry(file,domain)
+    from utils import well_known_utils
+    contents = well_known_utils.get_well_known_entry(file, domain)
     if contents is None: return {"error":"well_known_not_found"}, 404
 
     return Response(contents, mimetype="text/plain")

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, abort
 from markdown_it import MarkdownIt
-import blog_utils
+import utils.blog
 
 blog_routes = Blueprint("blog", __name__, url_prefix="/blogs")
 md = MarkdownIt("gfm-like2")
@@ -8,7 +8,7 @@ md = MarkdownIt("gfm-like2")
 @blog_routes.route("/")
 @blog_routes.route("")
 def blog_list():
-    blogs = blog_utils.get_blog_previews()
+    blogs = utils.blog.get_blog_previews()
 
     final_list = ""
     for blog in blogs:
