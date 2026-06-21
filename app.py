@@ -2,10 +2,11 @@ from flask import Flask
 from sentry_sdk.integrations.flask import FlaskIntegration
 from flask_session import Session
 from dotenv import load_dotenv
+from utils.setup import init_db
 import sentry_sdk
 import os
 
-
+init_db()
 load_dotenv()
 sentry_sdk.init(os.environ.get("SENTRY_DSN"), integrations=[FlaskIntegration()])
 

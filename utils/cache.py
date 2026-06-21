@@ -1,6 +1,7 @@
 import ast
-import mysql.connector
+import sqlite3
 import os
+import dateparser
 import requests
 import datetime
 import sentry_sdk
@@ -8,24 +9,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-pool = mysql.connector.pooling.MySQLConnectionPool(
-    host=os.environ.get("DB_HOST"),
-    user=os.environ.get("DB_USERNAME"),
-    password=os.environ.get('DB_PASSWORD'),
-    port=os.environ.get("DB_PORT"),
-    database="personal-website",
-    pool_size=2,
-    pool_reset_session=True,
-)
-
 print("db connection initialised")
 
 def get_cache_data(key:str) -> list | None:
-    conn = pool.get_connection()
+    conn = sqlite3.connect("data/data.db")
     try:
         cursor = conn.cursor()
 
-        cursor.execute("SELECT * from cached_data WHERE name = %s",(key,))
+        cursor.execute("SELECT * from cached_data WHERE name = ?",(key,))
         data = cursor.fetchone() # data is ordered in [id, key, last_updated, data, update_frequency]
         if not data is None:
             return list(data)
@@ -40,14 +31,14 @@ def get_cache_data(key:str) -> list | None:
         conn.close()
 
 def store_cache_data(key:str, data:str):
-    conn = pool.get_connection()
+    conn = sqlite3.connect("data/data.db")
     try:
         cursor = conn.cursor()
 
         if get_cache_data(key):
-            cursor.execute("UPDATE `cached_data` SET `last_updated` = NOW(), `data` = %s WHERE name = %s", (data,key,))
+            cursor.execute("UPDATE `cached_data` SET `last_updated` = CURRENT_TIMESTAMP, `data` = ? WHERE name = ?", (data,key,))
         else:
-            cursor.execute("INSERT INTO `cached_data` (`id`, `name`, `last_updated`, `data`, `frequency_min`) VALUES (NULL, %s, NOW(), %s, 5)", (key, data,))
+            cursor.execute("INSERT INTO `cached_data` (`id`, `name`, `last_updated`, `data`, `frequency_min`) VALUES (NULL, ?, CURRENT_TIMESTAMP, ?, 5)", (key, data,))
 
         print("updated the database")
         conn.commit()
@@ -63,7 +54,7 @@ def get_docker_data() -> list[int]:
     existing_data = get_cache_data("docker_services")
     if existing_data:
         last_updated = existing_data[2]
-        time_since_updated = datetime.datetime.now() - last_updated
+        time_since_updated = datetime.datetime.now() - dateparser.parse(last_updated)
 
         if time_since_updated.total_seconds() <= int(existing_data[4])*60: #check if i can use the existing data, and return it if i can
             return ast.literal_eval(existing_data[3])
@@ -99,7 +90,7 @@ def get_website_uptime() -> float:
     existing_data = get_cache_data("website_uptime")
     if existing_data:
         last_updated = existing_data[2]
-        time_since_updated = datetime.datetime.now() - last_updated
+        time_since_updated = datetime.datetime.now() - dateparser.parse(last_updated)
 
         if time_since_updated.total_seconds() <= int(existing_data[4])*60: #check if i can use the existing data, and return it if i can
             return float(existing_data[3])

@@ -1,22 +1,12 @@
-import mysql.connector
+import sqlite3
 import os
 from dotenv import load_dotenv
 import sentry_sdk
 
 load_dotenv()
 
-pool = mysql.connector.pooling.MySQLConnectionPool(
-    host=os.environ.get("DB_HOST"),
-    user=os.environ.get("DB_USERNAME"),
-    password=os.environ.get('DB_PASSWORD'),
-    port=os.environ.get("DB_PORT"),
-    database="personal-website",
-    pool_size=2,
-    pool_reset_session=True,
-)
-
 def get_blog_previews() -> list[list]:
-    conn = pool.get_connection()
+    conn = sqlite3.connect("data/data.db")
     try:
         cursor = conn.cursor()
 
@@ -40,10 +30,10 @@ def get_blog_previews() -> list[list]:
         conn.close()
 
 def get_blog_info(slug:str) -> list|None:
-    conn = pool.get_connection()
+    conn = sqlite3.connect("data/data.db")
     try:
         cursor = conn.cursor()
-        cursor.execute("SELECT * from blogs WHERE slug = %s",(slug,))
+        cursor.execute("SELECT * from blogs WHERE slug = ?",(slug,))
 
         info = cursor.fetchone()
         return info
@@ -52,10 +42,10 @@ def get_blog_info(slug:str) -> list|None:
         conn.close()
 
 def create_blog(title:str,slug:str,markdown:str):
-    conn = pool.get_connection()
+    conn = sqlite3.connect("data/data.db")
     try:
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO blogs (`id`, `title`, `slug`, `published`, `blog_markdown`) VALUES (NULL, %s, %s, NOW(), %s)",(title,slug,markdown,))
+        cursor.execute("INSERT INTO blogs (`id`, `title`, `slug`, `published`, `blog_markdown`) VALUES (NULL, ?, ?, CURRENT_TIMESTAMP, ?)",(title,slug,markdown,))
 
         conn.commit()
     finally:
