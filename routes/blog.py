@@ -18,7 +18,7 @@ def blog_list():
 
 @blog_routes.route("/<slug>")
 def blog_entry(slug):
-    blog_info = blog_utils.get_blog_info(slug)
+    blog_info = utils.blog.get_blog_info(slug)
 
     if blog_info is None:
         abort(404)
