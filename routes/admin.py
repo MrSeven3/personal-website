@@ -1,10 +1,17 @@
-from flask import Blueprint, redirect, request, abort, session, render_template, flash
+from flask import Blueprint, redirect, request, abort, session, render_template
 import requests
 import secrets
 import os, shutil
 import urllib.parse
 
 admin_routes = Blueprint("admin", __name__, url_prefix="/admin")
+
+@admin_routes.before_request
+def require_login():
+    if request.endpoint in ("admin.sso_login_path", "admin.handle_oauth"):
+        return
+    if not session.get("logged_in"):
+        return redirect("/admin/login")
 
 @admin_routes.route("/login")
 def sso_login_path():
@@ -55,17 +62,10 @@ def handle_oauth():
 
 @admin_routes.route("/")
 def most_basic_landing_page_ever_because_only_i_will_see_it():
-    if not session.get('logged_in'):
-        return redirect("/admin/login")
-
     return render_template("admin/landing.html")
 
 @admin_routes.route("/clear-sessions")
 def clear_all_sessions():
-    if not session.get('logged_in'):
-        print("user isnt logged in, redirecting")
-        return redirect("/admin/login")
-
     shutil.rmtree("flask_session")
     os.mkdir("flask_session")
     session.clear()
@@ -74,10 +74,6 @@ def clear_all_sessions():
 
 @admin_routes.route("/well-known-config", methods=['GET','POST'])
 def dynamic_well_known_config():
-    if not session.get('logged_in'):
-        print("user isnt logged in, redirecting")
-        return redirect("/admin/login")
-
     import utils.well_known
     if request.method == "GET":
         entry_list = utils.well_known.get_all_well_known_entries()
@@ -102,10 +98,6 @@ def dynamic_well_known_config():
 
 @admin_routes.route("/well-known-config/remove-well-known-entry",methods=['POST'])
 def remove_well_known_config():
-    if not session.get('logged_in'):
-        print("user isnt logged in, redirecting")
-        return redirect("/admin/login")
-
     import utils.well_known
 
     slug = request.form.get('slug')
@@ -120,10 +112,6 @@ def remove_well_known_config():
 
 @admin_routes.route("/blogs", methods=['GET','POST'])
 def blog_config():
-    if not session.get('logged_in'):
-        print("user isnt logged in, redirecting")
-        return redirect("/admin/login")
-
     if request.method == "GET": return render_template("admin/blog-admin.html")
 
     uploaded_file = request.files['file']
