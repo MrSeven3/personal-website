@@ -15,7 +15,7 @@ def get_blog_previews() -> list[list]:
 
         blog_previews = [] #format is a list of lists, each list is [name, url slug, preview text]
         for blog in blog_entries:
-            blog_text = str(blog)[5].split("\n")[0] #get the first line of markdown
+            blog_text = blog[5].decode().split("\n")[0] #get the first line of markdown
             if len(blog_text) > 200: #cap it to 200 characters
                 blog_text = blog_text[:200]
                 blog_text += " ..."

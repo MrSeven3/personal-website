@@ -24,5 +24,5 @@ def blog_entry(slug):
         abort(404)
     return render_template("/blog/blog-template.html",
                            blog_title=blog_info[1],
-                           blog_html=md.render(blog_info[5])
+                           blog_html=md.render(blog_info[5].decode())
    )
