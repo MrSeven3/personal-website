@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, request, abort, session, render_template
+from flask import Blueprint, redirect, request, abort, session, render_template, flash
 import requests
 import secrets
 import os, shutil
@@ -117,3 +117,24 @@ def remove_well_known_config():
     utils.well_known.delete_well_known_entry(slug, domain)
 
     return redirect("/admin/well-known-config")
+
+@admin_routes.route("/blogs", methods=['GET','POST'])
+def blog_config():
+    if not session.get('logged_in'):
+        print("user isnt logged in, redirecting")
+        return redirect("/admin/login")
+
+    if request.method == "GET": return render_template("admin/blog-admin.html")
+
+    uploaded_file = request.files['file']
+    if uploaded_file.filename == "" or uploaded_file.filename[-3:] != ".md": return redirect("/admin/blogs")
+
+    markdown = uploaded_file.read()
+
+    blog_title = request.form.get("title")
+    blog_slug = request.form.get("slug")
+
+    import utils.blog
+    utils.blog.create_blog(blog_title, blog_slug, markdown)
+
+    return redirect("/admin/blogs")

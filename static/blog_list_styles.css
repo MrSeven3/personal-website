@@ -19,7 +19,7 @@
     p {
         margin-top: 0;
         color: oklch(0.751 0.0396 273.93);
-        mask-image: linear-gradient(to bottom, black, transparent);
+        /*mask-image: linear-gradient(to bottom, black, transparent);*/
 
     }
 
