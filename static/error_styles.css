@@ -29,6 +29,10 @@
         text-align: center;
         font-size: 12px;
     }
+
+    p:last-child {
+        margin-top: 5vw;
+    }
 }
 
 .top-right-anchor {
@@ -51,6 +55,10 @@
 
 body {
     background: #1e1e2e;
+}
+
+a {
+    color: oklch(0.7176 0.1839 304.77);
 }
 
 ::selection {
