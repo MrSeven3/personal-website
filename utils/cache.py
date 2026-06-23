@@ -75,7 +75,10 @@ def get_docker_data() -> list[int]:
             print("komodo data get failed with code " +str(container_summary.status_code)+"\n"+str(container_summary.text))
             return ast.literal_eval(existing_data[3]) if existing_data else [-1,-1]#if its available, return old data on new data fail
     except requests.exceptions.Timeout:
-        print("komodo docker stats timed out")
+        sentry_sdk.capture_message(
+            "komodo docker data gathering timed out",
+            level="warning",
+        )
         return ast.literal_eval(existing_data[3]) if existing_data else [-1,-1]#if its available, return old data on new data fail
 
     total_docker_services = int(deploy_summary.json()['running']) + int(stack_summary.json()['running'])
@@ -104,7 +107,10 @@ def get_website_uptime() -> float:
             print("uptime data get failed with code " +str(uptime_data.status_code)+"\n"+str(uptime_data.text))
             float(existing_data[3]) if existing_data else -1 #if its available, return old data on new data fail
     except requests.exceptions.Timeout:
-        print("grafana timed out")
+        sentry_sdk.capture_message(
+            "uptime data gathering timed out",
+            level="warning",
+        )
         return float(existing_data[3]) if existing_data else -1#if its available, return old data on new data fail
 
     uptime = float(uptime_data.json()['data']['result'][0]['value'][1]) * 100
