@@ -1,9 +1,7 @@
 import sqlite3
 import os
-from dotenv import load_dotenv
 import sentry_sdk
 
-load_dotenv()
 
 def get_blog_previews() -> list[list]:
     conn = sqlite3.connect("data/data.db")

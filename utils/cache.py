@@ -5,11 +5,7 @@ import dateparser
 import requests
 import datetime
 import sentry_sdk
-from dotenv import load_dotenv
 
-load_dotenv()
-
-print("db connection initialised")
 
 def get_cache_data(key:str) -> list | None:
     conn = sqlite3.connect("data/data.db")
