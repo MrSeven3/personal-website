@@ -126,3 +126,8 @@ def blog_config():
     utils.blog.create_blog(blog_title, blog_slug, markdown)
 
     return redirect("/admin/blogs")
+
+@admin_routes.route("/debug")
+def show_some_useless_debug_info():
+    client_ip = request.remote_addr
+    return render_template("admin/debug.html", ip=client_ip)
