@@ -1,5 +1,6 @@
 from flask import Flask
 from sentry_sdk.integrations.flask import FlaskIntegration
+from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_session import Session
 from dotenv import load_dotenv
 from utils.setup import init_db
@@ -12,6 +13,8 @@ load_dotenv()
 sentry_sdk.init(os.environ.get("SENTRY_DSN"), integrations=[FlaskIntegration()])
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
+
 app.secret_key = os.environ.get("FLASK_SECRET_KEY")
 
 app.config["SESSION_TYPE"] = "filesystem"
