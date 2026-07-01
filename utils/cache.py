@@ -45,37 +45,28 @@ def store_cache_data(key:str, data:str):
         cursor.close()
         conn.close()
 
+def fetch_docker_data(): #refresh the stats on docker from komodo
+    komodo_auth_headers = {"X-Api-Key": os.environ.get("KOMODO_API_KEY"),"X-Api-Secret": os.environ.get("KOMODO_API_SECRET"), "Content-Type": "application/json"}
 
-def get_docker_data() -> list[int]:
-    existing_data = get_cache_data("docker_services")
-    if existing_data:
-        last_updated = existing_data[2]
-        time_since_updated = datetime.datetime.now() - dateparser.parse(last_updated)
-
-        if time_since_updated.total_seconds() <= int(existing_data[4])*60: #check if i can use the existing data, and return it if i can
-            return ast.literal_eval(existing_data[3])
-        print("data is " + str(time_since_updated.total_seconds()) + " seconds old. refreshing stale data")
-
-    komodo_auth_headers = {"X-Api-Key": os.environ.get("KOMODO_API_KEY"), "X-Api-Secret": os.environ.get("KOMODO_API_SECRET"), "Content-Type": "application/json"}
-    try: #pulls service and container summaries from komodo, returning existing data if it fails, or -1 if there is no existing data
-        deploy_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetDeploymentsSummary", headers=komodo_auth_headers, json={}, timeout=(1, 2))
+    try:
+        deploy_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetDeploymentsSummary",headers=komodo_auth_headers, json={}, timeout=(1, 2))
         if deploy_summary.status_code != 200:
-            print("komodo data get failed with code " +str(deploy_summary.status_code)+"\n"+str(deploy_summary.text))
-            return ast.literal_eval(existing_data[3]) if existing_data else [-1,-1] #if its available, return old data on new data fail
-        stack_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetStacksSummary", headers=komodo_auth_headers, json={}, timeout=(1, 2))
+            sentry_sdk.capture_message("komodo docker data gathering failed, request to komodo did not return successfully, returned code "+str(deploy_summary.status_code), level="warning", )
+            return
+
+        stack_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetStacksSummary",headers=komodo_auth_headers, json={}, timeout=(1, 2))
         if stack_summary.status_code != 200:
-            print("komodo data get failed with code " +str(stack_summary.status_code)+"\n"+str(deploy_summary.text))
-            return ast.literal_eval(existing_data[3]) if existing_data else [-1,-1]#if its available, return old data on new data fail
-        container_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetDockerContainersSummary", headers=komodo_auth_headers, json={}, timeout=(1, 2))
+            sentry_sdk.capture_message("komodo docker data gathering failed, request to komodo did not return successfully, returned code "+str(stack_summary.status_code), level="warning", )
+            return
+
+        container_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetDockerContainersSummary",headers=komodo_auth_headers, json={}, timeout=(1, 2))
         if container_summary.status_code != 200:
-            print("komodo data get failed with code " +str(container_summary.status_code)+"\n"+str(container_summary.text))
-            return ast.literal_eval(existing_data[3]) if existing_data else [-1,-1]#if its available, return old data on new data fail
-    except requests.exceptions.Timeout:
-        sentry_sdk.capture_message(
-            "komodo docker data gathering timed out",
-            level="warning",
-        )
-        return ast.literal_eval(existing_data[3]) if existing_data else [-1,-1]#if its available, return old data on new data fail
+            sentry_sdk.capture_message("komodo docker data gathering failed, request to komodo did not return successfully, returned code "+str(container_summary.status_code), level="warning", )
+            return
+
+    except requests.exceptions.Timeout or requests.exceptions.ConnectionError:
+        sentry_sdk.capture_message("komodo docker data gathering failed to connect to komodo",level="warning",)
+        return
 
     total_docker_services = int(deploy_summary.json()['running']) + int(stack_summary.json()['running'])
     docker_containers = int(container_summary.json()['running'])
@@ -83,7 +74,13 @@ def get_docker_data() -> list[int]:
     docker_data = [total_docker_services, docker_containers]
 
     store_cache_data("docker_services", str(docker_data))
-    return docker_data
+
+def get_docker_data() -> list[int]:
+    existing_data = get_cache_data("docker_services")
+    if existing_data:
+        return ast.literal_eval(existing_data[3])
+    else:
+        return [-1, -1]
 
 def get_website_uptime() -> float:
     existing_data = get_cache_data("website_uptime")
