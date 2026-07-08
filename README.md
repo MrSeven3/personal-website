@@ -1,6 +1,10 @@
 # my personal website! 
 ###### (served with flask because its funny)
 
+this is just a little personal website that talks about me and some of the stuff ive done! the backend is far too large, 
+as i have a way of overcomplicating things (im pretty sure there are technically more admin pages than public pages, 
+though they are smaller)
+
 this is overengineered in almost every way possible lol. there isnt a bit of javascript here (except for the umami tracker), 
 and everything is served dynamically with flask. the stats on the main page are pulled from actual things i selfhost, and 
 are cached to avoid people spamming it. that cache is manually handled with sqlite because i didnt know what redis was 
