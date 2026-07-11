@@ -49,17 +49,17 @@ def fetch_docker_data(): #refresh the stats on docker from komodo
     komodo_auth_headers = {"X-Api-Key": os.environ.get("KOMODO_API_KEY"),"X-Api-Secret": os.environ.get("KOMODO_API_SECRET"), "Content-Type": "application/json"}
 
     try:
-        deploy_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetDeploymentsSummary",headers=komodo_auth_headers, json={}, timeout=(1, 2))
+        deploy_summary = requests.post(str(os.environ.get("KOMODO_QUERY_DOMAIN"))+"/read/GetDeploymentsSummary",headers=komodo_auth_headers, json={}, timeout=(1, 2))
         if deploy_summary.status_code != 200:
             sentry_sdk.capture_message("komodo docker data gathering failed, request to komodo did not return successfully, returned code "+str(deploy_summary.status_code), level="warning", )
             return
 
-        stack_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetStacksSummary",headers=komodo_auth_headers, json={}, timeout=(1, 2))
+        stack_summary = requests.post(str(os.environ.get("KOMODO_QUERY_DOMAIN"))+"/read/GetStacksSummary",headers=komodo_auth_headers, json={}, timeout=(1, 2))
         if stack_summary.status_code != 200:
             sentry_sdk.capture_message("komodo docker data gathering failed, request to komodo did not return successfully, returned code "+str(stack_summary.status_code), level="warning", )
             return
 
-        container_summary = requests.post("https://komodo.thirtyseventh.xyz/read/GetDockerContainersSummary",headers=komodo_auth_headers, json={}, timeout=(1, 2))
+        container_summary = requests.post(str(os.environ.get("KOMODO_QUERY_DOMAIN"))+"/read/GetDockerContainersSummary",headers=komodo_auth_headers, json={}, timeout=(1, 2))
         if container_summary.status_code != 200:
             sentry_sdk.capture_message("komodo docker data gathering failed, request to komodo did not return successfully, returned code "+str(container_summary.status_code), level="warning", )
             return
@@ -86,7 +86,7 @@ def fetch_website_uptime():
     grafana_auth_headers = {"Authorization": "Bearer " + os.environ.get("GRAFANA_API_KEY")}
 
     try: #pull the uptime data from prometheus using grafana. prometheus gets it from uptime kuma, tho the calculations are different, so this is slightly wrong. TODO: either fix prometheus or find a way to poll uptime kuma directly
-        uptime_data = requests.get("https://grafana.thirtyseventh.xyz/api/datasources/uid/efive1u0b5wqob/resources/api/v1/query?query=avg_over_time(monitor_status%7Bmonitor_name%3D%22Personal%20Website%22%7D%5B30d%5D)", headers=grafana_auth_headers, timeout=(1, 2))
+        uptime_data = requests.get(str(os.environ.get("GRAFANA_QUERY_ENDPOINT")), headers=grafana_auth_headers, timeout=(1, 2))
         if uptime_data.status_code != 200:
             sentry_sdk.capture_message("uptime data gathering did not return sucessfully, returned code "+str(uptime_data.status_code), level="warning")
             return
