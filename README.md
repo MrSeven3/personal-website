@@ -30,3 +30,17 @@ way it looks
 sonnet 4.6 helped with some of the oauth stuff, and also occasionally told me how to do basic css stuff, ex: me just not 
 having the class set properly. it also helped me figure out how to use flask blueprints. i mostly used it to point out me 
 being an idiot though
+
+---
+
+### running it
+if for some reason you want to... run my personal website, youre going to need a few things as i really didnt intend for this.
+youll need this stuff running:
+
+1. a voidauth sso server (configured with an oidc app for this, using the default config)
+2. a komodo instance to pull docker stats from
+3. a grafana instance connected to prometheus connected to uptime kuma to pull uptime data from
+
+after youve got that stuff setup and gotten familiar with it, copy `example.env` to `.env` (or your compose env vars directly) and fill out all of the values (theres some comments to maybe help with this, it should be pretty easy if youve used the software needed before)
+
+then you can run `docker compose up -d` in the directory root and it should build the docker image and launch
