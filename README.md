@@ -31,7 +31,9 @@ sonnet 4.6 helped with some of the oauth stuff, and also occasionally told me ho
 having the class set properly. it also helped me figure out how to use flask blueprints. i mostly used it to point out me 
 being an idiot though. 
 
-rereading this for the reship, i am remembering that it was also used to assist with the grafana query stuff, just the actual endpoint to query
+rereading this for the reship, i am remembering that it was also used to assist with the grafana query stuff, just the 
+actual endpoint to query. also for the reship, docker has been annoying and i needed it to point out i was being a 
+dumbass and had extra quotes in a spot
 
 ---
 
@@ -43,6 +45,8 @@ youll need this stuff running:
 2. a komodo instance to pull docker stats from
 3. a grafana instance connected to prometheus connected to uptime kuma to pull uptime data from
 
-after youve got that stuff setup and gotten familiar with it, copy `example.env` to `.env` (or your compose env vars directly) and fill out all of the values (theres some comments to maybe help with this, it should be pretty easy if youve used the software needed before)
+build the docker image by running `docker build -t personal-website .`. you must do this before you configure env otherwise you will build the `.env` file into the image
 
-then you can run `docker compose up -d` in the directory root and it should build the docker image and launch
+after youve got that stuff setup and gotten familiar with it, copy `example.env` to `.env` and fill out all of the values (theres some comments to maybe help with this, it should be pretty easy if youve used the software needed before)
+
+then you can run the container (provided you have all of the other things done) by running `docker run --name personal-website --network=host --env-file .env personal-website`
