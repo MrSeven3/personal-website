@@ -5,6 +5,7 @@ from flask_session import Session
 from dotenv import load_dotenv
 from utils.setup import init_db
 from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime
 import sentry_sdk
 import os
 
@@ -28,13 +29,15 @@ scheduler.add_job(
     func=utils.cache.fetch_docker_data,
     id="docker_data_refresh",
     trigger="interval",
-    minutes=5
+    minutes=5,
+    next_run_time=datetime.now()
 )
 scheduler.add_job(
     func=utils.cache.fetch_website_uptime,
     id="uptime_data_refresh",
     trigger="interval",
-    minutes=15
+    minutes=15,
+    next_run_time=datetime.now()
 )
 
 from routes.main import main_routes
