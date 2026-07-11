@@ -29,7 +29,9 @@ way it looks
 
 sonnet 4.6 helped with some of the oauth stuff, and also occasionally told me how to do basic css stuff, ex: me just not 
 having the class set properly. it also helped me figure out how to use flask blueprints. i mostly used it to point out me 
-being an idiot though
+being an idiot though. 
+
+rereading this for the reship, i am remembering that it was also used to assist with the grafana query stuff, just the actual endpoint to query
 
 ---
 
