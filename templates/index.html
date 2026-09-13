@@ -52,14 +52,14 @@
             </div>
             <div class="space-grotesk-normal info-panel info-panel-large">
                 <h2 class="space-grotesk-header subsection-header">my homelab</h2>
-                <p class="subsection-text">totally overkill lmao. i run voidauth for sso, and have like 12 different compose stacks running stuff.
-                    the docker containers are managed by komodo (great software). everything with a public domain is through nginx
-                    (finally out of proxyauth hell). i run my own <a href="https://tangled.org">tangled.org</a> knot and spindle, and i run game servers with pterodactyl.
-                    theres a public uptime monitor <a href="https://uptime.thirtyseventh.xyz">here</a>. <br><br> i also run a very
-                    glitchy home assistant that is more often broken than functional. i have a grafana dashboard because
-                    i can. all of this runs on a raspberry pi 5 with 8gb of ram, a pi 3b with 1gb, an old gaming laptop
-                    with 16gb, a free oracle vps with 24gb, and a small server provided by hack club (<a href="https://hackclub.app">nest</a> is a great
-                    resource if you're in hack club)</p>
+                <p class="subsection-text">totally overkill lmao. i run voidauth for sso. almost everything runs in
+                    docker, because it makes it easy to manage. i control docker using komodo, managing all 5 machines
+                    using it. theres something like 30 services i run (see the count beneath this section), and i
+                    actually use most of them. i access stuff either through tailscale for super private stuff, or have
+                    stuff public on the internet with traefik or cloudflare tunnels. i run a
+                    <a href="https://tangled.org">tangled.org</a> knot because i like their philosophy <br><br> overall
+                    i control like 39gb ram, and a bunch of cpu cores of varying quality. theres a public uptime monitor
+                    about all my stuff <a href="https://uptime.thirtyseventh.xyz">here</a> </p>
             </div>
         </div>
 
