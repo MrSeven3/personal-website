@@ -35,7 +35,7 @@ h3.space-grotesk-header {
 }
 
 .page-header-header {
-    font-size: 48px;
+    font-size: 64px;
     padding-top: 0;
     flex-direction: column;
 
@@ -49,7 +49,7 @@ h3.space-grotesk-header {
 
 .page-header {
     margin: 3rem auto;
-    width: 33em;
+    width: 34em;
 }
 
 .subsection-header {
